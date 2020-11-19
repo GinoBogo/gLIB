@@ -23,7 +23,7 @@ static inline void *g_aligned_alloc(size_t alignment, size_t size) {
     // Align to the requested value, leaving room for the original malloc value.
     void *const aligned_ptr{(void *)(((uintptr_t)malloc_ptr + alignment) & -alignment)};
 
-    // Store the original malloc value where it can be found by operator delete.
+    // Store the original malloc value where it can be found by the free function.
     ((void **)aligned_ptr)[-1] = malloc_ptr;
     return aligned_ptr;
 }
