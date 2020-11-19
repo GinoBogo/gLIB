@@ -9,12 +9,6 @@
 #ifndef GBUFFER_HPP
 #define GBUFFER_HPP
 
-#ifdef __APPLE__
-#ifndef __FreeBSD__
-#define __FreeBSD__
-#endif
-#endif
-
 #include <cstddef> // size_t
 
 class GBuffer {

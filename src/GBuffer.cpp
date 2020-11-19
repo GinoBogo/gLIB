@@ -8,26 +8,39 @@
 
 #include "GBuffer.hpp"
 
-#include <cstdlib>
-#include <cstring>
+#include <cstdlib> // malloc, free
+#include <cstring> // memcpy, memset
 
-#ifdef _LIBCPP_HAS_ALIGNED_ALLOC || _GLIBCXX_HAVE_ALIGNED_ALLOC
-#define ALIGNED_ALLOC(alignment, size) std::aligned_alloc(alignment, size)
-#define ALIGNED_FREE(pointer)          std::free(pointer)
-#else
-#define ALIGNED_ALLOC(alignment, size) ::_aligned_malloc(size, alignment)
-#define ALIGNED_FREE(pointer)          ::_aligned_free(pointer)
-#endif
+static inline void *g_aligned_alloc(size_t alignment, size_t size) {
+    // Alignment must be a power of two.
+    if (alignment & (alignment - 1) || !size) return nullptr;
+
+    // We need extra bytes to store the original value returned by malloc.
+    if (alignment < sizeof(void *)) alignment = sizeof(void *);
+    void *const malloc_ptr{std::malloc(size + alignment)};
+    if (!malloc_ptr) return nullptr;
+
+    // Align to the requested value, leaving room for the original malloc value.
+    void *const aligned_ptr{(void *)(((uintptr_t)malloc_ptr + alignment) & -alignment)};
+
+    // Store the original malloc value where it can be found by operator delete.
+    ((void **)aligned_ptr)[-1] = malloc_ptr;
+    return aligned_ptr;
+}
+
+static inline void g_free(void *aligned_ptr) {
+    std::free(((void **)aligned_ptr)[-1]);
+}
 
 GBuffer::GBuffer(size_t bytes) {
     m_size = bytes;
-    m_data = static_cast<char *>(ALIGNED_ALLOC(64, m_size));
-    memset(m_data, 0, m_size);
+    m_data = static_cast<char *>(g_aligned_alloc(64, m_size));
+    std::memset(m_data, 0, m_size);
     Clear();
 }
 
 GBuffer::~GBuffer() {
-    ALIGNED_FREE(m_data);
+    g_free(m_data);
 }
 
 void GBuffer::Clear() {
@@ -37,7 +50,7 @@ void GBuffer::Clear() {
 
 bool GBuffer::ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) {
     if (dst_bytes <= m_rest) {
-        memcpy(dst_buffer, m_next, dst_bytes);
+        std::memcpy(dst_buffer, m_next, dst_bytes);
         m_next += dst_bytes;
         m_rest -= dst_bytes;
 
@@ -49,7 +62,7 @@ bool GBuffer::ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) {
 
 bool GBuffer::WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full) {
     if (src_bytes <= m_rest) {
-        memcpy(m_next, src_buffer, src_bytes);
+        std::memcpy(m_next, src_buffer, src_bytes);
         m_next += src_bytes;
         m_rest -= src_bytes;
 
