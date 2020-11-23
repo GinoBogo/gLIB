@@ -1,1 +1,10 @@
 .vscode
+*.ps1
+*.sh
+
+benchmark/*ninja*
+benchmark/build
+benchmark/cmake_install*
+benchmark/CMakeCache*
+benchmark/CMakeFiles*
+benchmark/libs
