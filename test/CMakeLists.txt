@@ -35,7 +35,7 @@ message("=======================================================================
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-project(benchmark)
+project(test)
 
 add_compile_options(
     -fno-omit-frame-pointer
@@ -54,14 +54,12 @@ if (COMPILE_LANGUAGE:CXX)
     add_compile_options(-Wold-style-cast)
 endif()
 
-add_executable(BM_aligned_memory
-BM_aligned_memory.cpp
+add_executable(test_GPingPong
+../src/GBuffer.cpp
+../src/GPingPong.cpp
+test_GPingPong.cpp
 )
 
-target_link_libraries(BM_aligned_memory benchmark)
+target_include_directories(test_GPingPong PRIVATE ../src)
 
-add_executable(BM_if_else_vs_array
-BM_if_else_vs_array.cpp
-)
-
-target_link_libraries(BM_if_else_vs_array benchmark)
+target_link_libraries(test_GPingPong pthread) 
