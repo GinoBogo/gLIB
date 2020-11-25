@@ -39,6 +39,7 @@ GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream
 
             if (!*t_args->thread_exit) {
                 w_func(w_args);
+                ++(*w_args->buffer_counter);
             }
             *t_args->thread_busy = false;
         }
@@ -61,54 +62,42 @@ GPingPong::~GPingPong() {
 
 void GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
     if (m_stream_type == READER && dst_buffer != nullptr && dst_bytes == m_chunk_bytes) {
-        auto _focus{m_buffer_pair[m_buffer_pair_id].focus};
-        auto _after{m_buffer_pair[m_buffer_pair_id].after};
-
-        bool is_empty;
-        _focus->ReadNext(dst_buffer, dst_bytes, &is_empty);
-        if (is_empty) {
-            auto error_raised{false};
-            {
-                std::lock_guard<std::mutex> lock(m_thread_mutex);
-                if (!m_thread_busy) {
-                    m_worker_args.buffer = _focus;
-                    m_thread_busy        = true;
-                }
-                else {
-                    error_raised = true;
-                }
-            }
-            if (!error_raised) m_thread_order.notify_one();
-
-            _after->Clear();
-            m_buffer_pair_id = !m_buffer_pair_id;
-        }
+        UseNext<bool>(dst_buffer, dst_bytes);
     }
 }
 
 void GPingPong::Write(void *src_buffer, size_t src_bytes) {
     if (m_stream_type == WRITER && src_buffer != nullptr && src_bytes == m_chunk_bytes) {
-        auto _focus{m_buffer_pair[m_buffer_pair_id].focus};
-        auto _after{m_buffer_pair[m_buffer_pair_id].after};
+        UseNext<long>(src_buffer, src_bytes);
+    }
+}
 
-        bool is_full;
-        _focus->WriteNext(src_buffer, src_bytes, &is_full);
-        if (is_full) {
-            auto error_raised{false};
-            {
-                std::lock_guard<std::mutex> lock(m_thread_mutex);
-                if (!m_thread_busy) {
-                    m_worker_args.buffer = _focus;
-                    m_thread_busy        = true;
-                }
-                else {
-                    error_raised = true;
-                }
+template <typename T> void GPingPong::UseNext(void *buffer, size_t bytes) {
+    auto _focus{m_buffer_pair[m_buffer_pair_id].focus};
+    auto _after{m_buffer_pair[m_buffer_pair_id].after};
+
+    bool toggle_buffer;
+    if constexpr (std::is_same_v<T, bool>) {
+        _focus->ReadNext(buffer, bytes, &toggle_buffer);
+    }
+    else {
+        _focus->WriteNext(buffer, bytes, &toggle_buffer);
+    }
+    if (toggle_buffer) {
+        auto error_raised{false};
+        {
+            std::lock_guard<std::mutex> lock(m_thread_mutex);
+            if (!m_thread_busy) {
+                m_worker_args.buffer = _focus;
+                m_thread_busy        = true;
             }
-            if (!error_raised) m_thread_order.notify_one();
-
-            _after->Clear();
-            m_buffer_pair_id = !m_buffer_pair_id;
+            else {
+                error_raised = true;
+            }
         }
+        if (!error_raised) m_thread_order.notify_one();
+
+        _after->Clear();
+        m_buffer_pair_id = !m_buffer_pair_id;
     }
 }

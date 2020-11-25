@@ -11,8 +11,6 @@ void fileWriter(GPingPong::WorkerArgs *args) {
 
         stream.write(args->buffer->data(), static_cast<std::streamsize>(args->buffer->size()));
         stream.close();
-
-        ++(*args->buffer_counter);
     }
 }
 
@@ -37,7 +35,7 @@ int main() {
     for (auto i{0}; i < loop_counter; ++i) {
         filler(src_buffer, chunk_bytes);
         pp_writer.Write(src_buffer, chunk_bytes);
-        std::this_thread::sleep_for(std::chrono::milliseconds(20));
+        std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 
     delete[] src_buffer;

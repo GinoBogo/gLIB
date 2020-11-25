@@ -34,6 +34,8 @@ class GPingPong {
     void Write(void *src_buffer, size_t src_bytes);
 
     private:
+    template <typename T> inline void UseNext(void *buffer, size_t bytes);
+
     struct ThreadArgs {
         bool *                   thread_exit;
         bool *                   thread_busy;
