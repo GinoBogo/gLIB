@@ -1,6 +1,4 @@
 .vscode
-*.ps1
-*.sh
 
 benchmark/build
 benchmark/libs
