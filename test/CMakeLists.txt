@@ -11,7 +11,7 @@ if (COMPILER STREQUAL "clang")
         set(CMAKE_CXX_COMPILER "clang++")
     endif()
 
-    if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    if (${CMAKE_BUILD_TYPE} STREQUAL "debug")
         add_compile_options(-fstandalone-debug)
     endif()
 else()

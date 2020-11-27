@@ -13,7 +13,12 @@ New-Item -ItemType Directory -Force -Path ./build
 
 Set-Location ./build
 
-cmake.exe ../ -G "Ninja" -DCMAKE_BUILD_TYPE=release
+if ($($args.count) -gt 0) {
+    cmake.exe ../ -G "Ninja" -DCMAKE_BUILD_TYPE=debug
+}
+else {
+    cmake.exe ../ -G "Ninja" -DCMAKE_BUILD_TYPE=release
+}
 
 ninja.exe
 

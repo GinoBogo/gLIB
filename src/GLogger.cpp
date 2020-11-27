@@ -47,7 +47,8 @@ namespace GLogger {
         auto text{fmt::format("{} | {:<8} | {:>30} ({:04}) | {}", time, flag, name.string(), line, message)};
 
         if (!is_open) {
-            fout = std::ofstream(name.replace_extension(".log").string());
+            fout    = std::ofstream(name.replace_extension(".log").string());
+            is_open = true;
         }
 
         using namespace std;
