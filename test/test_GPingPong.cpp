@@ -1,3 +1,4 @@
+#include "GLogger.hpp"
 #include "GPingPong.hpp"
 
 #include <cstdio>
@@ -15,6 +16,8 @@ void fileWriter(GPingPong::WorkerArgs *args) {
 }
 
 int main() {
+    LOG_WRITE(info, "Process STARTED");
+
     const auto chunk_bytes{200};
     const auto chunks_number{50};
     const auto loop_counter{300};
@@ -39,5 +42,7 @@ int main() {
     }
 
     delete[] src_buffer;
+
+    LOG_WRITE(info, "Process STOPPED");
     return 0;
 }

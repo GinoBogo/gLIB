@@ -56,10 +56,11 @@ endif()
 
 add_executable(test_GPingPong
 ../src/GBuffer.cpp
+../src/GLogger.cpp
 ../src/GPingPong.cpp
 test_GPingPong.cpp
 )
 
 target_include_directories(test_GPingPong PRIVATE ../src)
 
-target_link_libraries(test_GPingPong pthread) 
+target_link_libraries(test_GPingPong pthread fmt) 
