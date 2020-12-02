@@ -13,7 +13,7 @@
 #define PING 0
 #define PONG 1
 
-GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func)
+GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any *user_data)
 : m_chunk_bytes{chunk_bytes}, m_chunks_number{chunks_number}, m_stream_type{stream_type} {
 
     m_buffer_pair[0].focus = new GBuffer(m_chunk_bytes * m_chunks_number);
@@ -32,6 +32,7 @@ GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream
 
     m_worker_args.buffer         = nullptr;
     m_worker_args.buffer_counter = &m_buffer_counter;
+    m_worker_args.user_data      = user_data;
     m_worker_func                = worker_func;
 
     auto t_loop = [](ThreadArgs *t_args, WorkerArgs *w_args, WorkerFunc w_func) {

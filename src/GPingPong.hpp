@@ -11,6 +11,7 @@
 
 #include "GBuffer.hpp"
 
+#include <any>
 #include <condition_variable>
 #include <thread>
 
@@ -19,13 +20,14 @@ class GPingPong {
     enum StreamType { READER, WRITER };
 
     struct WorkerArgs {
-        GBuffer *buffer;
-        size_t * buffer_counter;
+        GBuffer * buffer;
+        size_t *  buffer_counter;
+        std::any *user_data;
     };
 
     typedef void (*WorkerFunc)(WorkerArgs *args);
 
-    GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func);
+    GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any *user_data = nullptr);
 
     ~GPingPong();
 
