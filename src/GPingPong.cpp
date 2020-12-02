@@ -8,6 +8,8 @@
 
 #include "GPingPong.hpp"
 
+#include "GLogger.hpp"
+
 #define PING 0
 #define PONG 1
 
@@ -93,6 +95,7 @@ template <typename T> void GPingPong::UseNext(void *buffer, size_t bytes) {
             }
             else {
                 error_raised = true;
+                LOG_WRITE(error, "<producer> faster than <consumer>");
             }
         }
         if (!error_raised) m_thread_order.notify_one();
