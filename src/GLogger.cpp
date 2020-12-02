@@ -36,7 +36,7 @@ namespace GLogger {
         }
         else {
             fout    = std::ofstream(filename);
-            is_open = true;
+            is_open = fout.is_open();
         }
     }
 
@@ -48,7 +48,7 @@ namespace GLogger {
 
         if (!is_open) {
             fout    = std::ofstream(name.replace_extension(".log").string());
-            is_open = true;
+            is_open = fout.is_open();
         }
 
         using namespace std;

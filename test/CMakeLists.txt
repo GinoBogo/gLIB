@@ -61,6 +61,8 @@ add_executable(test_GPingPong
 test_GPingPong.cpp
 )
 
-target_include_directories(test_GPingPong PRIVATE ../src)
+target_include_directories(test_GPingPong PRIVATE ../src /usr/local/include)
 
-target_link_libraries(test_GPingPong pthread fmt) 
+find_library(LIB_FMT fmt)
+
+target_link_libraries(test_GPingPong pthread ${LIB_FMT})
