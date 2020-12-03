@@ -19,6 +19,8 @@ class GBuffer {
 
     void Clear();
 
+    void Zeros();
+
     bool ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty);
 
     bool WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full);

@@ -14,8 +14,7 @@
 GBuffer::GBuffer(size_t bytes) {
     m_size = bytes;
     m_data = static_cast<char *>(std::malloc(m_size));
-    std::memset(m_data, 0, m_size);
-    Clear();
+    Zeros();
 }
 
 GBuffer::~GBuffer() {
@@ -25,6 +24,12 @@ GBuffer::~GBuffer() {
 void GBuffer::Clear() {
     m_next = m_data;
     m_rest = m_size;
+}
+
+void GBuffer::Zeros() {
+    m_next = m_data;
+    m_rest = m_size;
+    std::memset(m_data, 0, m_size);
 }
 
 bool GBuffer::ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) {
