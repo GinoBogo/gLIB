@@ -1,19 +1,5 @@
+#include "GFilePipe.hpp"
 #include "GLogger.hpp"
-#include "GPingPong.hpp"
-
-#include <cstdio>
-#include <fstream>
-
-void fileWriter(GPingPong::WorkerArgs *args) {
-    if (args != nullptr) {
-        char filename[4096];
-        snprintf(filename, sizeof(filename), "tx_samples_%06lu.bin", *args->buffer_counter);
-        auto stream{std::ofstream(filename, std::ios::binary)};
-
-        stream.write(args->buffer->data(), static_cast<std::streamsize>(args->buffer->size()));
-        stream.close();
-    }
-}
 
 int main() {
     LOG_WRITE(trace, "Process STARTED");
@@ -22,7 +8,7 @@ int main() {
     const auto chunks_number{50};
     const auto loop_counter{300};
 
-    auto pp_writer{GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, fileWriter)};
+    auto file_pipe{GFilePipe("tx_samples", chunk_bytes, chunks_number, GPingPong::WRITER)};
 
     auto src_buffer{new char[chunk_bytes]};
 
@@ -37,7 +23,7 @@ int main() {
 
     for (auto i{0}; i < loop_counter; ++i) {
         filler(src_buffer, chunk_bytes);
-        pp_writer.Write(src_buffer, chunk_bytes);
+        file_pipe.Write(src_buffer, chunk_bytes);
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
 

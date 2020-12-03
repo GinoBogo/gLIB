@@ -45,6 +45,7 @@ add_compile_options(
     -Wextra
     -Wfloat-equal
    #-Wno-unused-parameter
+   #-Wno-unused-variable
     -Wshadow
     -Wsign-conversion
     -Wswitch-default
@@ -54,15 +55,19 @@ if (COMPILE_LANGUAGE:CXX)
     add_compile_options(-Wold-style-cast)
 endif()
 
-add_executable(test_GPingPong
-../src/GBuffer.cpp
-../src/GLogger.cpp
-../src/GPingPong.cpp
-test_GPingPong.cpp
-)
-
-target_include_directories(test_GPingPong PRIVATE ../src /usr/local/include)
-
 find_library(LIB_FMT fmt)
 
-target_link_libraries(test_GPingPong pthread ${LIB_FMT})
+add_library(gLIB OBJECT
+../src/GBuffer.cpp
+../src/GFilePipe.cpp
+../src/GLogger.cpp
+../src/GPingPong.cpp
+)
+
+add_executable(test_GPingPong test_GPingPong.cpp)
+target_include_directories(test_GPingPong PRIVATE ../src /usr/local/include)
+target_link_libraries(test_GPingPong pthread ${LIB_FMT} gLIB)
+
+add_executable(test_GFilePipe test_GFilePipe.cpp)
+target_include_directories(test_GFilePipe PRIVATE ../src /usr/local/include)
+target_link_libraries(test_GFilePipe pthread ${LIB_FMT} gLIB)

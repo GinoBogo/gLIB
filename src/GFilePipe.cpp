@@ -1,0 +1,55 @@
+/// ============================================================================
+/// File    : GFilePipe.cpp
+/// Version : 0.2
+/// Date    : December 2020
+/// Author  : Gino Francesco Bogo
+/// License : MIT
+/// ============================================================================
+
+#include "GFilePipe.hpp"
+
+#include "GLogger.hpp"
+
+#include <fmt/core.h>
+#include <fstream>
+
+namespace g_file_pipe {
+    void fileReader(GPingPong::WorkerArgs *args) {
+        if (args != nullptr) {
+            auto filename{fmt::format("{}_{:06}.bin", std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
+
+            auto stream{std::ifstream(filename, std::ios::binary)};
+            auto dst_data{args->buffer->data()};
+            auto dst_size{args->buffer->size()};
+            stream.read(dst_data, static_cast<std::streamsize>(dst_size));
+            stream.close();
+        }
+    }
+
+    void fileWriter(GPingPong::WorkerArgs *args) {
+        if (args != nullptr) {
+            auto filename{fmt::format("{}_{:06}.bin", std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
+
+            auto stream{std::ofstream(filename, std::ios::binary)};
+            auto dst_data{args->buffer->data()};
+            auto dst_size{args->buffer->size()};
+            stream.write(dst_data, static_cast<std::streamsize>(dst_size));
+            stream.close();
+        }
+    }
+} // namespace g_file_pipe
+
+GFilePipe::GFilePipe(const std::string &filename, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
+    m_user_data = filename;
+
+    if (stream_type == GPingPong::READER) {
+        m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
+    }
+    else {
+        m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
+    }
+}
+
+GFilePipe::~GFilePipe() {
+    delete m_ping_pong;
+}
