@@ -42,15 +42,18 @@ namespace g_file_pipe {
 GFilePipe::GFilePipe(const std::string &filename, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
     m_user_data = filename;
 
-    if (stream_type == GPingPong::READER) {
-        m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
-        return;
+    switch (stream_type) {
+        case GPingPong::READER:
+            m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
+            break;
+        case GPingPong::WRITER:
+            m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
+            break;
+        default:
+            m_ping_pong = nullptr;
+            LOG_WRITE(error, "Wrong \"stream_type\" value");
+            break;
     }
-    if (stream_type == GPingPong::WRITER) {
-        m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
-        return;
-    }
-    LOG_WRITE(error, "Wrong \"stream_type\" value");
 }
 
 GFilePipe::~GFilePipe() {
