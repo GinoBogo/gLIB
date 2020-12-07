@@ -44,10 +44,13 @@ GFilePipe::GFilePipe(const std::string &filename, size_t chunk_bytes, size_t chu
 
     if (stream_type == GPingPong::READER) {
         m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
+        return;
     }
-    else {
+    if (stream_type == GPingPong::WRITER) {
         m_ping_pong = new GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
+        return;
     }
+    LOG_WRITE(error, "Wrong \"stream_type\" value");
 }
 
 GFilePipe::~GFilePipe() {

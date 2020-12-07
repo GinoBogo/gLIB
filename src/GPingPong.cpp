@@ -67,11 +67,17 @@ void GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
     if (m_stream_type == READER && dst_buffer != nullptr && dst_bytes == m_chunk_bytes) {
         UseNext<bool>(dst_buffer, dst_bytes);
     }
+    else {
+        LOG_WRITE(error, "Wrong Read() function usage");
+    }
 }
 
 void GPingPong::Write(void *src_buffer, size_t src_bytes) {
     if (m_stream_type == WRITER && src_buffer != nullptr && src_bytes == m_chunk_bytes) {
         UseNext<long>(src_buffer, src_bytes);
+    }
+    else {
+        LOG_WRITE(error, "Wrong Write() function usage");
     }
 }
 

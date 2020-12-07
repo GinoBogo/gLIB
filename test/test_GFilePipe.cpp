@@ -15,7 +15,7 @@ int main() {
     size_t index{0};
 
     auto filler = [&index](char *data, size_t size) {
-        for (size_t i{0}; i < size; ++i) {
+        for (decltype(size) i{0}; i < size; ++i) {
             auto rem{index++ % 11};
             data[i] = static_cast<char>(!rem ? '_' : ('0' - 1) + rem);
         }
