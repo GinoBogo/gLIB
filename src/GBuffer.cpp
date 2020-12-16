@@ -8,8 +8,11 @@
 
 #include "GBuffer.hpp"
 
-#include <cstdlib> // malloc, free
-#include <cstring> // memcpy, memset
+#include "GLogger.hpp"
+
+#include <cstdlib>    // malloc, free
+#include <cstring>    // memcpy, memset
+#include <fmt/core.h> // format
 
 GBuffer::GBuffer(size_t bytes) {
     m_size = bytes;
@@ -41,6 +44,7 @@ bool GBuffer::ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) {
         *is_empty = (m_rest == 0);
         return true;
     }
+    LOG_WRITE(error, fmt::format("Not enough bytes to execute \"{}\"", __func__));
     return false;
 }
 
@@ -53,5 +57,6 @@ bool GBuffer::WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full)
         *is_full = (m_rest == 0);
         return true;
     }
+    LOG_WRITE(error, fmt::format("Not enough bytes to execute \"{}\"", __func__));
     return false;
 }
