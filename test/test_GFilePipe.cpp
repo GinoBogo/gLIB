@@ -8,7 +8,7 @@ int main() {
     const auto chunks_number{50};
     const auto loop_counter{300};
 
-    auto file_pipe{GFilePipe("tx_samples", chunk_bytes, chunks_number, GPingPong::WRITER)};
+    auto file_pipe{GFilePipe("tx_samples_{:04}.bin", chunk_bytes, chunks_number, GPingPong::WRITER)};
 
     auto src_buffer{new char[chunk_bytes]};
 

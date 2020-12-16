@@ -13,7 +13,7 @@
 
 class GFilePipe {
     public:
-    GFilePipe(const std::string &filename, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type);
+    GFilePipe(const std::string &filename_fmt, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type);
 
     ~GFilePipe();
 

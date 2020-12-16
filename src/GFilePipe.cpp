@@ -16,7 +16,7 @@
 namespace g_file_pipe {
     void fileReader(GPingPong::WorkerArgs *args) {
         if (args != nullptr) {
-            auto filename{fmt::format("{}_{:06}.bin", std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
+            auto filename{fmt::format(std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
 
             auto stream{std::ifstream(filename, std::ios::binary)};
             auto dst_data{args->buffer->data()};
@@ -28,7 +28,7 @@ namespace g_file_pipe {
 
     void fileWriter(GPingPong::WorkerArgs *args) {
         if (args != nullptr) {
-            auto filename{fmt::format("{}_{:06}.bin", std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
+            auto filename{fmt::format(std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
 
             auto stream{std::ofstream(filename, std::ios::binary)};
             auto dst_data{args->buffer->data()};
@@ -39,8 +39,8 @@ namespace g_file_pipe {
     }
 } // namespace g_file_pipe
 
-GFilePipe::GFilePipe(const std::string &filename, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
-    m_user_data = filename;
+GFilePipe::GFilePipe(const std::string &filename_fmt, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
+    m_user_data = filename_fmt;
 
     switch (stream_type) {
         case GPingPong::READER:
