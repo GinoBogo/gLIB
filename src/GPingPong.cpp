@@ -11,6 +11,8 @@
 #include "GLogger.hpp"
 
 #include <fmt/core.h>
+#include <pthread.h>
+#include <sched.h>
 
 #define PING 0
 #define PONG 1
@@ -51,6 +53,14 @@ GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream
     };
 
     m_thread_loop = std::thread(t_loop, &m_thread_args, &m_worker_args, m_worker_func);
+
+    int         pol;
+    sched_param param;
+    pthread_getschedparam(m_thread_loop.native_handle(), &pol, &param);
+    param.sched_priority = sched_get_priority_max(pol);
+    if (pthread_setschedparam(m_thread_loop.native_handle(), pol, &param)) {
+        LOG_WRITE(error, "Unable to set the highest thread priority");
+    }
 }
 
 GPingPong::~GPingPong() {
