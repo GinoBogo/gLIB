@@ -40,7 +40,7 @@ namespace GLogger {
         }
     }
 
-    void Write(Type type, const std::string &file, const size_t line, const std::string &message) {
+    void Write(Type type, const std::string &file, size_t line, const std::string &message) {
         auto time{GetDateTime()};
         auto flag{flags[type]};
         auto name{std::filesystem::path(file).filename()};
