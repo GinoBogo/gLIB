@@ -10,6 +10,8 @@
 
 #include "GLogger.hpp"
 
+#include <fmt/core.h>
+
 #define PING 0
 #define PONG 1
 
@@ -63,37 +65,36 @@ GPingPong::~GPingPong() {
     delete m_buffer_pair[0].after;
 }
 
-void GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
+bool GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
     if (m_stream_type == READER && dst_buffer != nullptr && dst_bytes == m_chunk_bytes) {
-        UseNext<bool>(dst_buffer, dst_bytes);
+        return UseNext<bool>(dst_buffer, dst_bytes);
     }
-    else {
-        LOG_WRITE(error, "Wrong Read() function usage");
-    }
+    LOG_WRITE(error, fmt::format("Wrong \"{}\" function usage", __func__));
+    return false;
 }
 
-void GPingPong::Write(void *src_buffer, size_t src_bytes) {
+bool GPingPong::Write(void *src_buffer, size_t src_bytes) {
     if (m_stream_type == WRITER && src_buffer != nullptr && src_bytes == m_chunk_bytes) {
-        UseNext<long>(src_buffer, src_bytes);
+        return UseNext<long>(src_buffer, src_bytes);
     }
-    else {
-        LOG_WRITE(error, "Wrong Write() function usage");
-    }
+    LOG_WRITE(error, fmt::format("Wrong \"{}\" function usage", __func__));
+    return false;
 }
 
-template <typename T> void GPingPong::UseNext(void *buffer, size_t bytes) {
+template <typename T> bool GPingPong::UseNext(void *buffer, size_t bytes) {
+    auto error_raised{false};
+    auto toggle_buffer{false};
+
     auto _focus{m_buffer_pair[m_buffer_pair_id].focus};
     auto _after{m_buffer_pair[m_buffer_pair_id].after};
 
-    bool toggle_buffer;
     if constexpr (std::is_same_v<T, bool>) {
-        _focus->ReadNext(buffer, bytes, &toggle_buffer);
+        error_raised = !_focus->ReadNext(buffer, bytes, &toggle_buffer);
     }
     else {
-        _focus->WriteNext(buffer, bytes, &toggle_buffer);
+        error_raised = !_focus->WriteNext(buffer, bytes, &toggle_buffer);
     }
     if (toggle_buffer) {
-        auto error_raised{false};
         {
             std::lock_guard<std::mutex> lock(m_thread_mutex);
             if (!m_thread_busy) {
@@ -110,4 +111,5 @@ template <typename T> void GPingPong::UseNext(void *buffer, size_t bytes) {
         _after->Clear();
         m_buffer_pair_id = !m_buffer_pair_id;
     }
+    return !error_raised;
 }

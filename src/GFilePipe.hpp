@@ -17,12 +17,12 @@ class GFilePipe {
 
     ~GFilePipe();
 
-    inline void Read(void *dst_buffer, size_t dst_bytes) {
-        m_ping_pong->Read(dst_buffer, dst_bytes);
+    inline bool Read(void *dst_buffer, size_t dst_bytes) {
+        return m_ping_pong->Read(dst_buffer, dst_bytes);
     }
 
-    inline void Write(void *src_buffer, size_t src_bytes) {
-        m_ping_pong->Write(src_buffer, src_bytes);
+    inline bool Write(void *src_buffer, size_t src_bytes) {
+        return m_ping_pong->Write(src_buffer, src_bytes);
     }
 
     private:

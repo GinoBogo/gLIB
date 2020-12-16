@@ -2,6 +2,7 @@
 #include "GPingPong.hpp"
 
 #include <cstdio>
+#include <fmt/core.h>
 #include <fstream>
 
 void fileWriter(GPingPong::WorkerArgs *args) {
@@ -16,7 +17,7 @@ void fileWriter(GPingPong::WorkerArgs *args) {
 }
 
 int main() {
-    LOG_WRITE(trace, "Process STARTED");
+    LOG_WRITE(trace, fmt::format("\"{}\" process STARTED", __func__));
 
     const auto chunk_bytes{200};
     const auto chunks_number{50};
@@ -43,6 +44,6 @@ int main() {
 
     delete[] src_buffer;
 
-    LOG_WRITE(trace, "Process STOPPED");
+    LOG_WRITE(trace, fmt::format("\"{}\" process STOPPED", __func__));
     return 0;
 }

@@ -31,12 +31,12 @@ class GPingPong {
 
     ~GPingPong();
 
-    void Read(void *dst_buffer, size_t dst_bytes);
+    bool Read(void *dst_buffer, size_t dst_bytes);
 
-    void Write(void *src_buffer, size_t src_bytes);
+    bool Write(void *src_buffer, size_t src_bytes);
 
     private:
-    template <typename T> inline void UseNext(void *buffer, size_t bytes);
+    template <typename T> inline bool UseNext(void *buffer, size_t bytes);
 
     struct ThreadArgs {
         bool *                   thread_exit;
