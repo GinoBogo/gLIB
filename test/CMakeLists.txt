@@ -64,10 +64,10 @@ add_library(gLIB OBJECT
 ../src/GPingPong.cpp
 )
 
+include_directories(../src /usr/local/include)
+
 add_executable(test_GPingPong test_GPingPong.cpp)
-target_include_directories(test_GPingPong PRIVATE ../src /usr/local/include)
 target_link_libraries(test_GPingPong pthread ${LIB_FMT} gLIB)
 
 add_executable(test_GFilePipe test_GFilePipe.cpp)
-target_include_directories(test_GFilePipe PRIVATE ../src /usr/local/include)
 target_link_libraries(test_GFilePipe pthread ${LIB_FMT} gLIB)
