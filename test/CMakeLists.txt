@@ -62,6 +62,7 @@ add_library(gLIB OBJECT
 ../src/GFilePipe.cpp
 ../src/GLogger.cpp
 ../src/GPingPong.cpp
+../src/GThreadPriority.cpp
 )
 
 include_directories(../src /usr/local/include)
