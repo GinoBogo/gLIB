@@ -10,16 +10,20 @@
 
 #include <thread>
 
-int GetThreadPriority();
+namespace GThreadPriority {
 
-int GetThreadPriority(std::thread &thread);
+    int get_priority();
 
-void GetThreadPriorityRange(int *min_priority, int *max_priority);
+    int get_priority(std::thread &thread);
 
-void GetThreadPriorityRange(std::thread &thread, int *min_priority, int *max_priority);
+    void get_priority_range(int *min_priority, int *max_priority);
 
-bool SetThreadPriority(int priority);
+    void get_priority_range(std::thread &thread, int *min_priority, int *max_priority);
 
-bool SetThreadPriority(std::thread &thread, int priority);
+    bool set_priority(int priority);
+
+    bool set_priority(std::thread &thread, int priority);
+
+} // namespace GThreadPriority
 
 #endif // GTHREADPRIORITY_HPP
