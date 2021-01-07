@@ -9,10 +9,9 @@
 #include "GPingPong.hpp"
 
 #include "GLogger.hpp"
+#include "GThreadPriority.hpp"
 
 #include <fmt/core.h>
-#include <pthread.h>
-#include <sched.h>
 
 #define PING 0
 #define PONG 1
@@ -53,14 +52,6 @@ GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream
     };
 
     m_thread_loop = std::thread(t_loop, &m_thread_args, &m_worker_args, m_worker_func);
-
-    int         pol;
-    sched_param param;
-    pthread_getschedparam(m_thread_loop.native_handle(), &pol, &param);
-    param.sched_priority = sched_get_priority_max(pol);
-    if (pthread_setschedparam(m_thread_loop.native_handle(), pol, &param)) {
-        LOG_WRITE(error, "Unable to set the highest thread priority");
-    }
 }
 
 GPingPong::~GPingPong() {
@@ -73,6 +64,30 @@ GPingPong::~GPingPong() {
 
     delete m_buffer_pair[0].focus;
     delete m_buffer_pair[0].after;
+}
+
+int GPingPong::GetThreadPriority() {
+    return GThreadPriority::get_priority(m_thread_loop);
+}
+
+bool GPingPong::SetThreadPriority(int priority) {
+    int min_priority, max_priority;
+    GThreadPriority::get_priority_range(m_thread_loop, &min_priority, &max_priority);
+
+    if (min_priority <= priority and priority <= max_priority) {
+        if (GThreadPriority::set_priority(m_thread_loop, priority)) {
+            LOG_WRITE(trace, "Thread priority has been changed");
+            return true;
+        }
+        else {
+            LOG_WRITE(error, "Unable to change the thread priority");
+        }
+    }
+    else {
+        LOG_WRITE(error, "Wrong thread priority value");
+        LOG_WRITE(info, fmt::format("Valid thread priority values: [{} → {}]", min_priority, max_priority));
+    }
+    return false;
 }
 
 bool GPingPong::Read(void *dst_buffer, size_t dst_bytes) {

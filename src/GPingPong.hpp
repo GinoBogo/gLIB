@@ -31,6 +31,10 @@ class GPingPong {
 
     ~GPingPong();
 
+    int GetThreadPriority();
+
+    bool SetThreadPriority(int priority);
+
     bool Read(void *dst_buffer, size_t dst_bytes);
 
     bool Write(void *src_buffer, size_t src_bytes);
