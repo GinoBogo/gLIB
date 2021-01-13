@@ -57,11 +57,15 @@ endif()
 add_executable(BM_aligned_memory
 BM_aligned_memory.cpp
 )
-
 target_link_libraries(BM_aligned_memory benchmark)
 
 add_executable(BM_if_else_vs_array
 BM_if_else_vs_array.cpp
 )
-
 target_link_libraries(BM_if_else_vs_array benchmark)
+
+add_executable(BM_snprintf_vs_strcpy
+BM_snprintf_vs_strcpy.cpp
+)
+target_link_libraries(BM_snprintf_vs_strcpy benchmark)
+
