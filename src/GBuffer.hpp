@@ -21,20 +21,32 @@ class GBuffer {
 
     void Zeros();
 
+    bool Read(void *dst_buffer, size_t dst_bytes);
+
     bool ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty);
+
+    bool Write(const void *src_buffer, size_t src_bytes);
 
     bool WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full);
 
-    auto *data() {
+    bool SetUsed(size_t bytes);
+
+    bool ShiftNext(long bytes);
+
+    inline auto *data() {
         return m_data;
     }
 
-    auto size() {
+    inline auto size() {
         return m_size;
     }
 
-    auto rest() {
+    inline auto rest() {
         return m_rest;
+    }
+
+    inline auto used() {
+        return m_used;
     }
 
     private:
@@ -42,6 +54,7 @@ class GBuffer {
     char * m_next;
     size_t m_size;
     size_t m_rest;
+    size_t m_used;
 };
 
 #endif // GBUFFER_HPP
