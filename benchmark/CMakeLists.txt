@@ -69,3 +69,8 @@ BM_snprintf_vs_strcpy.cpp
 )
 target_link_libraries(BM_snprintf_vs_strcpy benchmark)
 
+add_executable(BM_ofstream_vs_fwrite
+BM_ofstream_vs_fwrite.cpp
+)
+target_link_libraries(BM_ofstream_vs_fwrite benchmark)
+
