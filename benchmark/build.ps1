@@ -3,7 +3,7 @@ $env:Path += ";C:/msys64/mingw64/bin"
 
 Clear-Host
 
-. "./benchmark/clear.ps1"
+#. "./benchmark/clear.ps1"
 
 Start-Sleep -Milliseconds 800
 

@@ -1,6 +1,5 @@
 
 Clear-Host
-
 function DeleteItem {
     param ($name)
 
