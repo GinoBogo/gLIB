@@ -16,7 +16,7 @@ static void BM_filename_snprintf(benchmark::State &state) {
         auto N{static_cast<size_t>(state.range(0))};
         for (size_t index = 0; index < N; ++index) {
             char filename[4096];
-            snprintf(filename, sizeof(filename), "tx_samples_%06.bin", index);
+            snprintf(filename, sizeof(filename), "tx_samples_%06zu.bin", index);
         }
     }
 }
