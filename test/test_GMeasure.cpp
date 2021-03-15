@@ -26,7 +26,7 @@ int main() {
     auto loop    = 20000;
     auto elapsed = GMeasure::ns(func, loop, 23);
 
-    fmt::print(" - Elapsed time = {} us\n", elapsed / (double)loop);
+    fmt::print(" - Elapsed time = {} ns\n", elapsed / (double)loop);
 
     return 0;
 }
