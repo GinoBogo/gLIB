@@ -8,7 +8,7 @@
 void fileWriter(GPingPong::WorkerArgs *args) {
     if (args != nullptr) {
         char filename[4096];
-        snprintf(filename, sizeof(filename), "tx_samples_%06lu.bin", *args->buffer_counter);
+        snprintf(filename, sizeof(filename), "tx_samples_%06llu.bin", *args->buffer_counter);
         auto stream{std::ofstream(filename, std::ios::binary)};
 
         stream.write(args->buffer->data(), static_cast<std::streamsize>(args->buffer->size()));
