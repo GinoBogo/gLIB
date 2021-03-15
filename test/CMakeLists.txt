@@ -70,5 +70,8 @@ include_directories(../src /usr/local/include)
 add_executable(test_GPingPong test_GPingPong.cpp)
 target_link_libraries(test_GPingPong pthread ${LIB_FMT} gLIB)
 
+add_executable(test_GMeasure test_GMeasure.cpp)
+target_link_libraries(test_GMeasure pthread ${LIB_FMT} gLIB)
+
 add_executable(test_GFilePipe test_GFilePipe.cpp)
 target_link_libraries(test_GFilePipe pthread ${LIB_FMT} gLIB)
