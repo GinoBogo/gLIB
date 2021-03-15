@@ -1,3 +1,4 @@
+#include "GLogger.hpp"
 #include "GMeasure.hpp"
 
 #include <fmt/core.h>
@@ -17,16 +18,19 @@ void factorial_loop(int loop, int number) {
         result = factorial(number);
     }
 
-    fmt::print(" - Factorial({}) = {}\n", number, result);
+    LOG_WRITE(debug, fmt::format(" - Factorial({}) = {}", number, result));
 }
 
 int main() {
+    LOG_WRITE(trace, fmt::format("\"{}\" process STARTED", __func__));
+
     std::function<void(int, int)> func = factorial_loop;
 
     auto loop    = 20000;
     auto elapsed = GMeasure::ns(func, loop, 23);
 
-    fmt::print(" - Elapsed time = {} ns\n", elapsed / (double)loop);
+    LOG_WRITE(debug, fmt::format(" - Elapsed time = {} ns", elapsed / (double)loop));
 
+    LOG_WRITE(trace, fmt::format("\"{}\" process STOPPED", __func__));
     return 0;
 }
