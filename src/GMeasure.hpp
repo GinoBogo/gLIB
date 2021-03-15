@@ -25,4 +25,12 @@ struct GMeasure {
 
         return std::chrono::duration_cast<std::chrono::microseconds>(T1 - T0).count();
     }
+
+    template <typename Func, typename... Args> static auto ns(Func func, Args &&...args) {
+        auto T0 = std::chrono::system_clock::now();
+        func(std::forward<Args>(args)...);
+        auto T1 = std::chrono::system_clock::now();
+
+        return std::chrono::duration_cast<std::chrono::nanoseconds>(T1 - T0).count();
+    }
 };
