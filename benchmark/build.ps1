@@ -5,7 +5,7 @@ Clear-Host
 
 #. "./benchmark/clear.ps1"
 
-Start-Sleep -Milliseconds 800
+#Start-Sleep -Milliseconds 800
 
 Set-Location ./benchmark
 
