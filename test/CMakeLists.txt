@@ -59,6 +59,7 @@ find_library(LIB_FMT fmt)
 
 add_library(gLIB OBJECT
 ../src/GBuffer.cpp
+../src/GFifo.cpp
 ../src/GFilePipe.cpp
 ../src/GLogger.cpp
 ../src/GPingPong.cpp
