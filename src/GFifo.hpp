@@ -25,6 +25,8 @@ class GFifo {
 
     void Zeros() __attribute__((cold));
 
+    void ResetMetrics() __attribute__((cold));
+
     bool Push(void *src_buffer, size_t src_bytes) __attribute__((hot));
 
     bool Pop(void *dst_buffer, size_t *dst_bytes) __attribute__((hot));

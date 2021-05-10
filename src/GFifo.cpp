@@ -48,6 +48,12 @@ void GFifo::Zeros() {
     std::memset(m_data, 0, m_bytes * m_depth);
 }
 
+void GFifo::ResetMetrics() {
+    const std::lock_guard<std::mutex> lock(m_mutex);
+    m_overflow  = 0;
+    m_underflow = 0;
+}
+
 bool GFifo::Push(void *src_buffer, size_t src_bytes) {
     auto result{false};
     if (src_buffer != nullptr && src_bytes <= (m_bytes - sizeof(size_t))) {
