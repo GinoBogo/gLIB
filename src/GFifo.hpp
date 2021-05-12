@@ -21,11 +21,11 @@ class GFifo {
 
     ~GFifo();
 
+    void ResetMetrics() __attribute__((cold));
+
     void Clear() __attribute__((cold));
 
     void Zeros() __attribute__((cold));
-
-    void ResetMetrics() __attribute__((cold));
 
     bool Push(void *src_buffer, size_t src_bytes) __attribute__((hot));
 
@@ -102,6 +102,12 @@ class GFifo {
 
     std::mutex              m_mutex;
     std::condition_variable m_event;
+
+    void reset_metrics();
+
+    void clear();
+
+    void zeros();
 };
 
 #endif // GFIFO_HPP

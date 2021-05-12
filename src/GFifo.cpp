@@ -20,38 +20,44 @@ GFifo::GFifo(size_t bytes, size_t depth) //
 : m_bytes(bytes + sizeof(size_t)),       //
   m_depth(depth) {
     m_data = static_cast<char *>(std::malloc(m_bytes * m_depth));
-    Zeros();
+    zeros();
 }
 
 GFifo::~GFifo() {
     std::free(m_data);
 }
 
-void GFifo::Clear() {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    m_iR        = 0;
-    m_iW        = 0;
-    m_free      = m_depth;
-    m_used      = 0;
+void GFifo::reset_metrics() {
     m_overflow  = 0;
     m_underflow = 0;
 }
 
-void GFifo::Zeros() {
-    const std::lock_guard<std::mutex> lock(m_mutex);
-    m_iR        = 0;
-    m_iW        = 0;
-    m_free      = m_depth;
-    m_used      = 0;
-    m_overflow  = 0;
-    m_underflow = 0;
+void GFifo::clear() {
+    m_iR   = 0;
+    m_iW   = 0;
+    m_free = m_depth;
+    m_used = 0;
+    reset_metrics();
+}
+
+void GFifo::zeros() {
+    clear();
     std::memset(m_data, 0, m_bytes * m_depth);
 }
 
 void GFifo::ResetMetrics() {
     const std::lock_guard<std::mutex> lock(m_mutex);
-    m_overflow  = 0;
-    m_underflow = 0;
+    reset_metrics();
+}
+
+void GFifo::Clear() {
+    const std::lock_guard<std::mutex> lock(m_mutex);
+    clear();
+}
+
+void GFifo::Zeros() {
+    const std::lock_guard<std::mutex> lock(m_mutex);
+    zeros();
 }
 
 bool GFifo::Push(void *src_buffer, size_t src_bytes) {
