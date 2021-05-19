@@ -45,7 +45,7 @@ template <typename DIR, size_t NUM> class GFFT {
         if constexpr (std::is_same_v<DIR, gFFT::BACKWARD>) {
             m_plan = fftw_plan_dft_1d(NUM, m_signal, m_middle, FFTW_BACKWARD, FFTW_ESTIMATE);
         }
-    };
+    }
 
     ~GFFT() {
         fftw_destroy_plan(m_plan);
@@ -151,6 +151,10 @@ template <typename DIR, size_t NUM> class GFFT {
 
     auto result() {
         return m_result;
+    }
+
+    auto length() {
+        return NUM;
     }
 
     private:
