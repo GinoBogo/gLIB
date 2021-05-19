@@ -101,6 +101,23 @@ template <size_t NUM> class GXCorr {
         }
     }
 
+    template <typename T> bool GetResultX(T *result_buffer, size_t result_length) {
+        if (result_length == X_NUM) {
+            for (size_t i{0}; i < X_NUM; ++i) {
+                if constexpr (std::is_same_v<T, double>) {
+                    result_buffer[2 * i + 0] = m_result_X[i][0];
+                    result_buffer[2 * i + 1] = m_result_X[i][1];
+                }
+                else {
+                    result_buffer[2 * i + 0] = std::round(m_result_X[i][0]);
+                    result_buffer[2 * i + 1] = std::round(m_result_X[i][1]);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     void MaxPeak(double *value, size_t *index) {
         auto const Re{0};
         auto const Im{1};
