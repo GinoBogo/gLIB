@@ -11,7 +11,7 @@
 
 #include <cmath> // round
 #include <fftw3.h>
-#include <type_traits> // is_same_v
+#include <type_traits> // is_same_v, is_floating_point_v
 
 namespace gFFT {
     // NOTE: DIR choice
@@ -131,7 +131,7 @@ template <typename DIR, size_t NUM> class GFFT {
     template <typename T> bool GetResult(T *result_buffer, size_t result_length) {
         if (result_length == 2 * NUM) {
             for (size_t i{0}; i < NUM; ++i) {
-                if constexpr (std::is_same_v<T, double>) {
+                if constexpr (std::is_floating_point_v<T>) {
                     result_buffer[2 * i + 0] = m_result[i][0];
                     result_buffer[2 * i + 1] = m_result[i][1];
                 }

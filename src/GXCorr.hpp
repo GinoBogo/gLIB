@@ -11,7 +11,7 @@
 
 #include <cmath> // sqrt
 #include <fftw3.h>
-#include <type_traits> // is_same_v
+#include <type_traits> // is_same_v, is_floating_point_v
 
 namespace gGXCorr {
     struct NORMAL {
@@ -104,7 +104,7 @@ template <size_t NUM> class GXCorr {
     template <typename T> bool GetResultX(T *result_buffer, size_t result_length) {
         if (result_length == X_NUM) {
             for (size_t i{0}; i < X_NUM; ++i) {
-                if constexpr (std::is_same_v<T, double>) {
+                if constexpr (std::is_floating_point_v<T>) {
                     result_buffer[2 * i + 0] = m_result_X[i][0];
                     result_buffer[2 * i + 1] = m_result_X[i][1];
                 }
