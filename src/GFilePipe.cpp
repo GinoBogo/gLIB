@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GFilePipe.cpp
-/// Version : 0.2
-/// Date    : December 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GFilePipe.cpp
+/// \version   0.2
+/// \date      December 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #include "GFilePipe.hpp"
 

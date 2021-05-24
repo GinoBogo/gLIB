@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GBuffer.cpp
-/// Version : 0.2
-/// Date    : October 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GBuffer.cpp
+/// \version   0.2
+/// \date      October 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #include "GBuffer.hpp"
 

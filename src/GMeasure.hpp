@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GMeasure.hpp
-/// Version : 0.1
-/// Date    : March 2021
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GMeasure.hpp
+/// \version   0.1
+/// \date      March 2021
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #include <chrono>
 #include <utility>

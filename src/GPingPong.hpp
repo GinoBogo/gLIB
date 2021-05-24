@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GPingPong.hpp
-/// Version : 0.1
-/// Date    : October 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GPingPong.hpp
+/// \version   0.1
+/// \date      October 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GPINGPONG_HPP
 #define GPINGPONG_HPP

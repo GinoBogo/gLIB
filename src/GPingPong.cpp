@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GPingPong.cpp
-/// Version : 0.1
-/// Date    : October 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GPingPong.cpp
+/// \version   0.1
+/// \date      October 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #include "GPingPong.hpp"
 

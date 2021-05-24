@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GThreadPriority.hpp
-/// Version : 0.1
-/// Date    : December 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GThreadPriority.hpp
+/// \version   0.1
+/// \date      December 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GTHREADPRIORITY_HPP
 

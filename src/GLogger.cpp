@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GLogger.cpp
-/// Version : 0.4
-/// Date    : November 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GLogger.cpp
+/// \version   0.4
+/// \date      November 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #include "GLogger.hpp"
 
@@ -40,7 +40,7 @@ namespace GLogger {
         }
     }
 
-    void Write(Type type, const std::string &file, size_t line, const std::string &message) {
+    void Write(Type type, const std::string &file, const size_t line, const std::string &message) {
         auto time{GetDateTime()};
         auto flag{flags[type]};
         auto name{std::filesystem::path(file).filename()};

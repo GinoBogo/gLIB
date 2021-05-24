@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GLogger.hpp
-/// Version : 0.4
-/// Date    : November 2020
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GLogger.hpp
+/// \version   0.4
+/// \date      November 2020
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GLOGGER_HPP
 #define GLOGGER_HPP

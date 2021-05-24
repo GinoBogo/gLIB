@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : Gmseq.hpp
-/// Version : 0.1
-/// Date    : May 2021
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      Gmseq.hpp
+/// \version   0.1
+/// \date      May 2021
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GMSEQ_HPP
 #define GMSEQ_HPP

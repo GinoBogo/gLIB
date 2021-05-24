@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GXCorr.hpp
-/// Version : 0.1
-/// Date    : May 2021
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GXCorr.hpp
+/// \version   0.1
+/// \date      May 2021
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GXCORR_HPP
 #define GXCORR_HHP
@@ -14,12 +14,10 @@
 #include <type_traits> // is_same_v, is_floating_point_v
 
 namespace gGXCorr {
-    struct NORMAL {
-        bool _;
-    };
-    struct SHIFTED {
-        bool _;
-    };
+    // clang-format off
+    struct OP_NORMAL  { bool _; };
+    struct OP_SHIFTED { bool _; };
+    // clang-format on
 
 } // namespace gGXCorr
 
@@ -81,14 +79,14 @@ template <size_t NUM> class GXCorr {
         }
         fftw_execute(m_plan_X);
 
-        if constexpr (std::is_same_v<OP, gGXCorr::NORMAL>) {
+        if constexpr (std::is_same_v<OP, gGXCorr::OP_NORMAL>) {
             for (size_t i{0}; i < X_NUM; ++i) {
                 m_result_X[i][Re] = m_middle_X[i][Re];
                 m_result_X[i][Im] = m_middle_X[i][Im];
             }
         }
 
-        if constexpr (std::is_same_v<OP, gGXCorr::SHIFTED>) {
+        if constexpr (std::is_same_v<OP, gGXCorr::OP_SHIFTED>) {
             auto K{X_NUM / 2};
             for (size_t i{0}; i <= K; ++i) {
                 m_result_X[K + i][Re] = m_middle_X[i][Re];

@@ -1,10 +1,10 @@
-/// ============================================================================
-/// File    : GFifo.hpp
-/// Version : 0.1
-/// Date    : April 2021
-/// Author  : Gino Francesco Bogo
-/// License : MIT
-/// ============================================================================
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GFifo.hpp
+/// \version   0.1
+/// \date      April 2021
+/// \author    Gino Francesco Bogo
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GFIFO_HPP
 #define GFIFO_HPP
@@ -15,10 +15,10 @@
 class GFifo {
     public:
     // clang-format off
-    struct WAIT_IF_EMPTY   { bool _; };
-    struct WAIT_IF_FULL    { bool _; };
-    struct SIGNAL_NOT_EMPTY{ bool _; };
-    struct SIGNAL_NOT_FULL { bool _; };
+    struct WAIT_IF_EMPTY    { bool _; };
+    struct WAIT_IF_FULL     { bool _; };
+    struct SIGNAL_NOT_EMPTY { bool _; };
+    struct SIGNAL_NOT_FULL  { bool _; };
     // clang-format on
 
     GFifo(size_t bytes, size_t depth);
