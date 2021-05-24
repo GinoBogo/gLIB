@@ -14,8 +14,12 @@
 
 class GFifo {
     public:
-    enum AcquireCondition { WAIT_IF_EMPTY, WAIT_IF_FULL };
-    enum ReleaseCondition { SIGNAL_NOT_EMPTY, SIGNAL_NOT_FULL };
+    // clang-format off
+    struct WAIT_IF_EMPTY   { bool _; };
+    struct WAIT_IF_FULL    { bool _; };
+    struct SIGNAL_NOT_EMPTY{ bool _; };
+    struct SIGNAL_NOT_FULL { bool _; };
+    // clang-format on
 
     GFifo(size_t bytes, size_t depth);
 
@@ -31,45 +35,33 @@ class GFifo {
 
     bool Pop(void *dst_buffer, size_t *dst_bytes) __attribute__((hot));
 
-    void Acquire(AcquireCondition condition) {
-        switch (condition) {
-            case WAIT_IF_EMPTY: {
-                std::unique_lock<std::mutex> lock{m_mutex};
-                while (!m_used) {
-                    m_event.wait(lock);
-                }
-            } break;
-
-            case WAIT_IF_FULL: {
-                std::unique_lock<std::mutex> lock{m_mutex};
-                while (!m_free) {
-                    m_event.wait(lock);
-                }
-            } break;
-
-            default:
-                break;
+    template <typename T> void Acquire() {
+        if constexpr (std::is_same_v<T, WAIT_IF_EMPTY>) {
+            std::unique_lock<std::mutex> lock{m_mutex};
+            while (!m_used) {
+                m_event.wait(lock);
+            }
+        }
+        if constexpr (std::is_same_v<T, WAIT_IF_FULL>) {
+            std::unique_lock<std::mutex> lock{m_mutex};
+            while (!m_free) {
+                m_event.wait(lock);
+            }
         }
     }
 
-    void Release(ReleaseCondition condition) {
-        switch (condition) {
-            case SIGNAL_NOT_EMPTY: {
-                std::lock_guard<std::mutex> lock{m_mutex};
-                if (m_used) {
-                    m_event.notify_one();
-                }
-            } break;
-
-            case SIGNAL_NOT_FULL: {
-                std::lock_guard<std::mutex> lock{m_mutex};
-                if (m_free) {
-                    m_event.notify_one();
-                }
-            } break;
-
-            default:
-                break;
+    template <typename T> void Release() {
+        if constexpr (std::is_same_v<T, SIGNAL_NOT_EMPTY>) {
+            std::lock_guard<std::mutex> lock{m_mutex};
+            if (m_used) {
+                m_event.notify_one();
+            }
+        }
+        if constexpr (std::is_same_v<T, SIGNAL_NOT_FULL>) {
+            std::lock_guard<std::mutex> lock{m_mutex};
+            if (m_free) {
+                m_event.notify_one();
+            }
         }
     }
 
