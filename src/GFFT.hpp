@@ -39,7 +39,7 @@ template <typename DIR, size_t NUM> class GFFT {
         fftw_destroy_plan(m_plan);
     }
 
-    template <typename T> bool SetSignal(T *signal_buffer, size_t signal_length) {
+    template <typename T = double> bool SetSignal(T *signal_buffer, size_t signal_length) {
         if (signal_length == 2 * NUM) {
             for (size_t i{0}; i < NUM; ++i) {
                 m_signal[i][0] = signal_buffer[2 * i + 0];
@@ -116,7 +116,7 @@ template <typename DIR, size_t NUM> class GFFT {
         }
     }
 
-    template <typename T> bool GetResult(T *result_buffer, size_t result_length) {
+    template <typename T = double> bool GetResult(T *result_buffer, size_t result_length) {
         if (result_length == 2 * NUM) {
             for (size_t i{0}; i < NUM; ++i) {
                 if constexpr (std::is_floating_point_v<T>) {

@@ -35,7 +35,7 @@ template <size_t NUM> class GXCorr {
         fftw_destroy_plan(m_plan_X);
     }
 
-    template <typename T> bool SetSignalA(T *signal_buffer, size_t signal_length) {
+    template <typename T = double> bool SetSignalA(T *signal_buffer, size_t signal_length) {
         if (!(signal_length & 1) && (signal_length <= 2 * NUM)) {
             auto K{signal_length / 2};
             for (size_t i{0}; i < K; ++i) {
@@ -52,7 +52,7 @@ template <size_t NUM> class GXCorr {
         return false;
     }
 
-    template <typename T> bool SetSignalB(T *signal_buffer, size_t signal_length) {
+    template <typename T = double> bool SetSignalB(T *signal_buffer, size_t signal_length) {
         if (!(signal_length & 1) && (signal_length <= 2 * NUM)) {
             auto K{signal_length / 2};
             for (size_t i{0}; i < K; ++i) {
@@ -99,7 +99,7 @@ template <size_t NUM> class GXCorr {
         }
     }
 
-    template <typename T> bool GetResultX(T *result_buffer, size_t result_length) {
+    template <typename T = double> bool GetResultX(T *result_buffer, size_t result_length) {
         if (result_length == X_NUM) {
             for (size_t i{0}; i < X_NUM; ++i) {
                 if constexpr (std::is_floating_point_v<T>) {
