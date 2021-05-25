@@ -13,7 +13,7 @@
 #include <fftw3.h>
 #include <type_traits> // is_same_v, is_floating_point_v
 
-namespace gFFT {
+namespace G::FFT {
     // clang-format off
     struct DIR_FORWARD           { bool _; };
     struct DIR_BACKWARD          { bool _; };
@@ -22,15 +22,15 @@ namespace gFFT {
     struct OP_SHIFTED            { bool _; };
     struct OP_SCALED_AND_SHIFTED { bool _; };
     // clang-format on
-} // namespace gFFT
+} // namespace G::FFT
 
 template <typename DIR, size_t NUM> class GFFT {
     public:
     GFFT() {
-        if constexpr (std::is_same_v<DIR, gFFT::DIR_FORWARD>) {
+        if constexpr (std::is_same_v<DIR, G::FFT::DIR_FORWARD>) {
             m_plan = fftw_plan_dft_1d(NUM, m_signal, m_middle, FFTW_FORWARD, FFTW_ESTIMATE);
         }
-        if constexpr (std::is_same_v<DIR, gFFT::DIR_BACKWARD>) {
+        if constexpr (std::is_same_v<DIR, G::FFT::DIR_BACKWARD>) {
             m_plan = fftw_plan_dft_1d(NUM, m_signal, m_middle, FFTW_BACKWARD, FFTW_ESTIMATE);
         }
     }
@@ -53,21 +53,21 @@ template <typename DIR, size_t NUM> class GFFT {
     template <typename OP> void Execute() {
         fftw_execute(m_plan);
 
-        if constexpr (std::is_same_v<OP, gFFT::OP_NORMAL>) {
+        if constexpr (std::is_same_v<OP, G::FFT::OP_NORMAL>) {
             for (size_t i{0}; i < NUM; ++i) {
                 m_result[i][0] = m_middle[i][0];
                 m_result[i][1] = m_middle[i][1];
             }
         }
 
-        if constexpr (std::is_same_v<OP, gFFT::OP_SCALED>) {
+        if constexpr (std::is_same_v<OP, G::FFT::OP_SCALED>) {
             for (size_t i{0}; i < NUM; ++i) {
                 m_result[i][0] = m_middle[i][0] / NUM;
                 m_result[i][1] = m_middle[i][1] / NUM;
             }
         }
 
-        if constexpr (std::is_same_v<OP, gFFT::OP_SHIFTED>) {
+        if constexpr (std::is_same_v<OP, G::FFT::OP_SHIFTED>) {
             auto K{NUM / 2};
             if constexpr ((NUM & 1) == 0) {
                 for (size_t i{0}; i < K; ++i) {
@@ -91,7 +91,7 @@ template <typename DIR, size_t NUM> class GFFT {
             }
         }
 
-        if constexpr (std::is_same_v<OP, gFFT::OP_SCALED_AND_SHIFTED>) {
+        if constexpr (std::is_same_v<OP, G::FFT::OP_SCALED_AND_SHIFTED>) {
             auto K{NUM / 2};
             if constexpr ((NUM & 1) == 0) {
                 for (size_t i{0}; i < K; ++i) {

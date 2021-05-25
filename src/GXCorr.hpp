@@ -13,13 +13,12 @@
 #include <fftw3.h>
 #include <type_traits> // is_same_v, is_floating_point_v
 
-namespace gGXCorr {
+namespace G::XCorr {
     // clang-format off
     struct OP_NORMAL  { bool _; };
     struct OP_SHIFTED { bool _; };
     // clang-format on
-
-} // namespace gGXCorr
+} // namespace G::XCorr
 
 template <size_t NUM> class GXCorr {
     public:
@@ -79,14 +78,14 @@ template <size_t NUM> class GXCorr {
         }
         fftw_execute(m_plan_X);
 
-        if constexpr (std::is_same_v<OP, gGXCorr::OP_NORMAL>) {
+        if constexpr (std::is_same_v<OP, G::XCorr::OP_NORMAL>) {
             for (size_t i{0}; i < X_NUM; ++i) {
                 m_result_X[i][Re] = m_middle_X[i][Re];
                 m_result_X[i][Im] = m_middle_X[i][Im];
             }
         }
 
-        if constexpr (std::is_same_v<OP, gGXCorr::OP_SHIFTED>) {
+        if constexpr (std::is_same_v<OP, G::XCorr::OP_SHIFTED>) {
             auto K{X_NUM / 2};
             for (size_t i{0}; i <= K; ++i) {
                 m_result_X[K + i][Re] = m_middle_X[i][Re];
