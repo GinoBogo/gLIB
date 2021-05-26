@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GXCORR_HPP
-#define GXCORR_HHP
+#define GXCORR_HPP
 
 #include <cmath> // sqrt
 #include <fftw3.h>
