@@ -9,7 +9,7 @@
 #ifndef GPTR_HPP
 #define GPTR_HPP
 
-#include <type_traits> // is_same_v
+#include <type_traits> // is_same_v, is_void_v
 
 namespace G::Ptr {
     // clang-format off
