@@ -25,6 +25,8 @@ template <typename T, typename K = G::Ptr::K_ARRAY> class GPtr {
     }
 
     ~GPtr() {
+        static_assert(!std::is_void_v<T>, "can't delete pointer to incomplete type");
+
         if constexpr (std::is_same_v<K, G::Ptr::K_ARRAY>) {
             delete[] m_ptr;
         }
