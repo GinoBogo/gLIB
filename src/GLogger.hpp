@@ -11,7 +11,9 @@
 
 #include <string>
 
-#define LOG_WRITE(type, message) GLogger::Write(GLogger::type, __FILE__, __LINE__, message)
+#define LOG_TYPE(type) GLogger::type, __FILE__, __LINE__
+
+#define LOG_WRITE(type, message) GLogger::Write(LOG_TYPE(type), message)
 
 namespace GLogger {
 
