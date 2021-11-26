@@ -9,11 +9,14 @@
 #ifndef GLOGGER_HPP
 #define GLOGGER_HPP
 
-#include <string>
+#include <cstdio> // snprintf
+#include <string> // string
 
 #define LOG_TYPE(type) GLogger::type, __FILE__, __LINE__
 
 #define LOG_WRITE(type, message) GLogger::Write(LOG_TYPE(type), message)
+
+#define LOG_FORMAT(type, format, ...) GLogger::Format(LOG_TYPE(type), format, __VA_ARGS__)
 
 namespace GLogger {
 
@@ -22,6 +25,12 @@ namespace GLogger {
     void Initialize(const std::string &filename);
 
     void Write(Type type, const std::string &file, size_t line, const std::string &message);
+
+    template <class... Args> void Format(Type type, const char *file, size_t line, const char *format, Args... args) {
+        char msg[512];
+        snprintf(msg, sizeof msg, format, args...);
+        Write(type, file, line, msg);
+    }
 
 } // namespace GLogger
 
