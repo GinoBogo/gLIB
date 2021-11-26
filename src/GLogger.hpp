@@ -24,7 +24,7 @@ namespace GLogger {
 
     void Initialize(const std::string &filename);
 
-    void Write(Type type, const std::string &file, size_t line, const std::string &message);
+    void Write(Type type, const char *file, size_t line, const std::string &message);
 
     template <class... Args> void Format(Type type, const char *file, size_t line, const char *format, Args... args) {
         char msg[512];
