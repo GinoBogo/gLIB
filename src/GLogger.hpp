@@ -21,6 +21,8 @@ namespace GLogger {
 
     enum Type { debug, error, fatal, info, trace, warning };
 
+    enum Alignment { left, center, right };
+
     void Initialize(const std::string &filename);
 
     void Write(Type type, const char *file, size_t line, const std::string &message);
@@ -30,6 +32,8 @@ namespace GLogger {
         snprintf(msg, sizeof msg, format, args...);
         Write(type, file, line, msg);
     }
+
+    char *AlignText(Alignment mode, const char *src, char *dst, size_t span);
 
 } // namespace GLogger
 

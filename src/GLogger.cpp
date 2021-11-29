@@ -58,4 +58,36 @@ namespace GLogger {
         cout.flush();
         fout.flush();
     }
+
+    // WARNING: unsafe function
+    char *AlignText(Alignment mode, const char *src, char *dst, size_t span) {
+        if (src == nullptr || dst == nullptr) {
+            return nullptr;
+        }
+
+        memset(dst, ' ', span);
+        size_t dst_shift = 0;
+        size_t src_len   = strnlen(src, span);
+
+        switch (mode) {
+            case right: {
+                dst_shift = span - src_len;
+                src_len   = std::min(src_len, span - dst_shift);
+            } break;
+
+            case center: {
+                dst_shift = (span - src_len) / 2;
+                src_len   = std::min(src_len, span - dst_shift);
+            } break;
+
+            case left:
+            default:
+                break;
+        }
+
+        memcpy(dst + dst_shift, src, src_len);
+        dst[span] = 0;
+
+        return dst;
+    }
 } // namespace GLogger
