@@ -33,7 +33,7 @@ namespace GLogger {
         Write(type, file, line, msg);
     }
 
-    char *AlignText(Alignment mode, const char *src, char *dst, size_t span);
+    char *AlignText(Alignment mode, const char *src, char *dst, size_t span, char filler = ' ');
 
 } // namespace GLogger
 

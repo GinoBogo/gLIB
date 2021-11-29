@@ -60,12 +60,12 @@ namespace GLogger {
     }
 
     // WARNING: unsafe function
-    char *AlignText(Alignment mode, const char *src, char *dst, size_t span) {
+    char *AlignText(Alignment mode, const char *src, char *dst, size_t span, char filler) {
         if (src == nullptr || dst == nullptr) {
             return nullptr;
         }
 
-        memset(dst, ' ', span);
+        memset(dst, filler, span);
         size_t dst_shift = 0;
         size_t src_len   = strnlen(src, span);
 
