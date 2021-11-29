@@ -33,4 +33,4 @@ else {
 
 ninja.exe
 
-Copy-Item -Path ../libs/* -Destination ./bin -Recurse
+Copy-Item -Path ../../libs/* -Destination ./bin -Recurse
