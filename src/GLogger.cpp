@@ -70,21 +70,20 @@ namespace GLogger {
         size_t src_len   = strnlen(src, span);
 
         switch (mode) {
-            case right: {
-                dst_shift = span - src_len;
-                src_len   = std::min(src_len, span - dst_shift);
-            } break;
+            case right:
+                dst_shift = (span - src_len);
+                break;
 
-            case center: {
+            case center:
                 dst_shift = (span - src_len) / 2;
-                src_len   = std::min(src_len, span - dst_shift);
-            } break;
+                break;
 
             case left:
             default:
                 break;
         }
 
+        src_len = std::min(src_len, span - dst_shift);
         memcpy(dst + dst_shift, src, src_len);
         dst[span] = 0;
 
