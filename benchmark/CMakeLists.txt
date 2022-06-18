@@ -54,6 +54,9 @@ if (COMPILE_LANGUAGE:CXX)
     add_compile_options(-Wold-style-cast)
 endif()
 
+include_directories("/usr/local/include")
+link_directories("/usr/local/lib")
+
 add_executable(BM_aligned_memory
 BM_aligned_memory.cpp
 )
@@ -73,4 +76,3 @@ add_executable(BM_ofstream_vs_fwrite
 BM_ofstream_vs_fwrite.cpp
 )
 target_link_libraries(BM_ofstream_vs_fwrite benchmark)
-
