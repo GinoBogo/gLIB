@@ -6,7 +6,4 @@
 libs
 
 benchmark/build
-benchmark/libs
-
 test/build
-test/libs

@@ -40,7 +40,7 @@ namespace GLogger {
         }
     }
 
-    void Write(Type type, const std::string& file, const size_t line, const std::string& message) {
+    void Write(Type type, const char *file, const size_t line, const std::string &message) {
         auto time{GetDateTime()};
         auto flag{flags[type]};
         auto name{std::filesystem::path(file).filename()};
@@ -57,5 +57,36 @@ namespace GLogger {
 
         cout.flush();
         fout.flush();
+    }
+
+    // WARNING: unsafe function
+    char *AlignText(Alignment mode, const char *src, char *dst, size_t span, char filler) {
+        if (src == nullptr || dst == nullptr) {
+            return nullptr;
+        }
+
+        memset(dst, filler, span);
+        size_t dst_shift = 0;
+        size_t src_len   = strnlen(src, span);
+
+        switch (mode) {
+            case right:
+                dst_shift = (span - src_len);
+                break;
+
+            case center:
+                dst_shift = (span - src_len) / 2;
+                break;
+
+            case left:
+            default:
+                break;
+        }
+
+        src_len = std::min(src_len, span - dst_shift);
+        memcpy(dst + dst_shift, src, src_len);
+        dst[span] = 0;
+
+        return dst;
     }
 } // namespace GLogger

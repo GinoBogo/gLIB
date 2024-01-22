@@ -17,4 +17,4 @@ cmake.exe ../ -G "Ninja" -DCMAKE_BUILD_TYPE=release
 
 ninja.exe
 
-Copy-Item -Path ../libs/* -Destination ./bin -Recurse
+Copy-Item -Path ../../libs/* -Destination ./bin -Recurse
