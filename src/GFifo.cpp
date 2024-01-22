@@ -8,18 +8,18 @@
 
 #include "GFifo.hpp"
 
-#include <cstdlib> // malloc, free
+#include <cstdlib> // free, malloc, size_t
 #include <cstring> // memcpy, memset
 
 typedef union {
-    size_t *size;
-    char *  ptr;
+    size_t* size;
+    char*   ptr;
 } size_ptr;
 
-GFifo::GFifo(size_t bytes, size_t depth) //
-: m_bytes(bytes + sizeof(size_t)),       //
-  m_depth(depth) {
-    m_data = static_cast<char *>(std::malloc(m_bytes * m_depth));
+GFifo::GFifo(size_t bytes, size_t depth) :
+m_bytes(bytes + sizeof(size_t)),
+m_depth(depth) {
+    m_data = static_cast<char*>(std::malloc(m_bytes * m_depth));
     zeros();
 }
 
@@ -60,7 +60,7 @@ void GFifo::Zeros() {
     zeros();
 }
 
-bool GFifo::Push(void *src_buffer, size_t src_bytes) {
+bool GFifo::Push(void* src_buffer, size_t src_bytes) {
     auto result{false};
     if (src_buffer != nullptr && src_bytes <= (m_bytes - sizeof(size_t))) {
         size_ptr __dst;
@@ -88,7 +88,7 @@ bool GFifo::Push(void *src_buffer, size_t src_bytes) {
     return result;
 }
 
-bool GFifo::Pop(void *dst_buffer, size_t *dst_bytes) {
+bool GFifo::Pop(void* dst_buffer, size_t* dst_bytes) {
     auto result{false};
     if (dst_buffer != nullptr && dst_bytes != nullptr) {
         size_ptr __src;

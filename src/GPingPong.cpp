@@ -8,16 +8,18 @@
 
 #include "GPingPong.hpp"
 
-#include "GLogger.hpp"
-#include "GThreadPriority.hpp"
+#include "GLogger.hpp"         // LOG_WRITE, error, info, trace
+#include "GThreadPriority.hpp" // get_priority, get_priority_range, set_priority
 
-#include <fmt/core.h>
+#include <fmt/core.h> // format
 
 #define PING 0
 #define PONG 1
 
-GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any *user_data)
-: m_chunk_bytes{chunk_bytes}, m_chunks_number{chunks_number}, m_stream_type{stream_type} {
+GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any* user_data) :
+m_chunk_bytes{chunk_bytes},
+m_chunks_number{chunks_number},
+m_stream_type{stream_type} {
 
     m_buffer_pair[0].focus = new GBuffer(m_chunk_bytes * m_chunks_number);
     m_buffer_pair[0].after = new GBuffer(m_chunk_bytes * m_chunks_number);
@@ -38,7 +40,7 @@ GPingPong::GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream
     m_worker_args.user_data      = user_data;
     m_worker_func                = worker_func;
 
-    auto t_loop = [](ThreadArgs *t_args, WorkerArgs *w_args, WorkerFunc w_func) {
+    auto t_loop = [](ThreadArgs* t_args, WorkerArgs* w_args, WorkerFunc w_func) {
         while (!*t_args->thread_exit) {
             std::unique_lock<std::mutex> lock(*t_args->thread_mutex);
             t_args->thread_order->wait(lock, [t_args] { return *t_args->thread_exit || *t_args->thread_busy; });
@@ -90,7 +92,7 @@ bool GPingPong::SetThreadPriority(int priority) {
     return false;
 }
 
-bool GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
+bool GPingPong::Read(void* dst_buffer, size_t dst_bytes) {
     if (m_stream_type == READER && dst_buffer != nullptr && dst_bytes == m_chunk_bytes) {
         return UseNext<bool>(dst_buffer, dst_bytes);
     }
@@ -98,7 +100,7 @@ bool GPingPong::Read(void *dst_buffer, size_t dst_bytes) {
     return false;
 }
 
-bool GPingPong::Write(void *src_buffer, size_t src_bytes) {
+bool GPingPong::Write(void* src_buffer, size_t src_bytes) {
     if (m_stream_type == WRITER && src_buffer != nullptr && src_bytes == m_chunk_bytes) {
         return UseNext<long>(src_buffer, src_bytes);
     }
@@ -106,7 +108,7 @@ bool GPingPong::Write(void *src_buffer, size_t src_bytes) {
     return false;
 }
 
-template <typename T> bool GPingPong::UseNext(void *buffer, size_t bytes) {
+template <typename T> bool GPingPong::UseNext(void* buffer, size_t bytes) {
     auto error_raised{false};
     auto toggle_buffer{false};
 
@@ -131,7 +133,9 @@ template <typename T> bool GPingPong::UseNext(void *buffer, size_t bytes) {
                 LOG_WRITE(error, "<producer> faster than <consumer>");
             }
         }
-        if (!error_raised) m_thread_order.notify_one();
+        if (!error_raised) {
+            m_thread_order.notify_one();
+        }
 
         _after->Clear();
         m_buffer_pair_id = !m_buffer_pair_id;

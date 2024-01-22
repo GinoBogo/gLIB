@@ -1,4 +1,9 @@
+.cache
 .vscode
+.gitignore
+.DS_Store
+
+libs
 
 benchmark/build
 benchmark/libs

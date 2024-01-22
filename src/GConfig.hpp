@@ -9,19 +9,19 @@
 #ifndef GCONFIG_HPP
 #define GCONFIG_HPP
 
-#include "GOptions.hpp"
+#include "GOptions.hpp" // GOptions
 
 class GConfig {
-    public:
-    bool ReadOptions(const std::string &filename);
+  public:
+    bool ReadOptions(const std::string& filename);
 
-    bool WriteOptions(const std::string &filename);
+    bool WriteOptions(const std::string& filename);
 
     auto options() {
         return &m_options;
     }
 
-    private:
+  private:
     GOptions m_options;
 };
 

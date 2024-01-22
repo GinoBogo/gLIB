@@ -17,9 +17,9 @@ namespace GLogger {
 
     enum Type { debug, error, fatal, info, trace, warning };
 
-    void Initialize(const std::string &filename);
+    void Initialize(const std::string& filename);
 
-    void Write(Type type, const std::string &file, size_t line, const std::string &message);
+    void Write(Type type, const std::string& file, size_t line, const std::string& message);
 
 } // namespace GLogger
 

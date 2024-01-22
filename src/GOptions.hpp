@@ -9,15 +9,15 @@
 #ifndef GOPTIONS_HPP
 #define GOPTIONS_HPP
 
-#include <any>
-#include <list>
-#include <map>
-#include <string>
+#include <any>    // any, any_cast
+#include <list>   // list
+#include <map>    // map
+#include <string> // string
 
 class GOptions : public std::map<std::string, std::any> {
-    public:
+  public:
     struct Pair {
-        Pair(const std::string &_label, const std::string &_value) {
+        Pair(const std::string& _label, const std::string& _value) {
             label = _label;
             value = _value;
         };
@@ -28,7 +28,7 @@ class GOptions : public std::map<std::string, std::any> {
     typedef std::list<Pair> Pairs;
 
     struct Section {
-        Section(const std::string &_title) {
+        Section(const std::string& _title) {
             title = _title;
         };
         std::string title;
@@ -37,29 +37,29 @@ class GOptions : public std::map<std::string, std::any> {
 
     typedef std::list<Section> Sections;
 
-    template <typename T> void Insert(const std::string &label, const std::any &value);
+    template <typename T> void Insert(const std::string& label, const std::any& value);
 
-    template <typename T> T Get(const std::string &label);
+    template <typename T> T Get(const std::string& label);
 
     Pairs ToPairs();
 
     Sections ToSections();
 
-    bool Read(const std::string &filename);
+    bool Read(const std::string& filename);
 
-    bool Write(const std::string &filename);
+    bool Write(const std::string& filename);
 
-    GOptions &operator+=(const GOptions &options);
+    GOptions& operator+=(const GOptions& options);
 };
 
-template <typename T> void GOptions::Insert(const std::string &label, const std::any &value) {
+template <typename T> void GOptions::Insert(const std::string& label, const std::any& value) {
     if (value.type() == typeid(T)) {
         this->insert_or_assign(label, std::any_cast<T>(value));
     }
     else {
         if constexpr (std::is_same_v<T, std::string>) {
-            if (value.type() == typeid(const char *)) {
-                this->insert_or_assign(label, std::string(std::any_cast<const char *>(value)));
+            if (value.type() == typeid(const char*)) {
+                this->insert_or_assign(label, std::string(std::any_cast<const char*>(value)));
             }
         }
         else {
@@ -109,12 +109,12 @@ template <typename T> void GOptions::Insert(const std::string &label, const std:
     }
 }
 
-template <typename T> T GOptions::Get(const std::string &label) {
+template <typename T> T GOptions::Get(const std::string& label) {
     T type{};
 
     auto found{this->find(label)};
     if (found != this->end()) {
-        const auto &value{found->second};
+        const auto& value{found->second};
         if (value.type() == typeid(T)) {
             type = std::any_cast<T>(value);
         }

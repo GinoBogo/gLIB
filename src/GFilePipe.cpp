@@ -8,13 +8,13 @@
 
 #include "GFilePipe.hpp"
 
-#include "GLogger.hpp"
+#include "GLogger.hpp" // LOG_WRITE, error
 
-#include <fmt/core.h>
-#include <fstream>
+#include <fmt/core.h> // format
+#include <fstream>    // ifstream, ofstream
 
 namespace g_file_pipe {
-    void fileReader(GPingPong::WorkerArgs *args) {
+    void fileReader(GPingPong::WorkerArgs* args) {
         if (args != nullptr) {
             auto filename{fmt::format(std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
 
@@ -26,7 +26,7 @@ namespace g_file_pipe {
         }
     }
 
-    void fileWriter(GPingPong::WorkerArgs *args) {
+    void fileWriter(GPingPong::WorkerArgs* args) {
         if (args != nullptr) {
             auto filename{fmt::format(std::any_cast<std::string>(*args->user_data), *args->buffer_counter)};
 
@@ -39,7 +39,7 @@ namespace g_file_pipe {
     }
 } // namespace g_file_pipe
 
-GFilePipe::GFilePipe(const std::string &filename_fmt, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
+GFilePipe::GFilePipe(const std::string& filename_fmt, size_t chunk_bytes, size_t chunks_number, GPingPong::StreamType stream_type) {
     m_user_data = filename_fmt;
 
     switch (stream_type) {

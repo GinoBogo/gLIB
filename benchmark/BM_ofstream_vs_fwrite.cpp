@@ -1,20 +1,21 @@
 #include <benchmark/benchmark.h>
-#include <cstring>
-#include <fstream>
+#include <cstring> // size_t, strcpy, strlen
+#include <fstream> // ofstream
 
-void filename_index(char *dst_filename, const char *src_filename, size_t index) {
+void filename_index(char* dst_filename, const char* src_filename, size_t index) {
     strcpy(dst_filename, src_filename);
     strcpy(dst_filename + strlen(dst_filename), "_000000.bin");
     auto pos{strlen(dst_filename) - 5};
     while (index > 0) {
         dst_filename[pos--] = '0' + (index % 10);
+
         index /= 10;
     }
 }
 
-static void BM_ofstream(benchmark::State &state) {
+static void BM_ofstream(benchmark::State& state) {
     auto filename{new char[1024]};
-    auto buffer{new char[8e6]};
+    auto buffer{new char[8 * 1024 * 1024]};
     auto index{0UL};
 
     for (auto _ : state) {
@@ -28,9 +29,9 @@ static void BM_ofstream(benchmark::State &state) {
     delete[] filename;
 }
 
-static void BM_fwrite(benchmark::State &state) {
+static void BM_fwrite(benchmark::State& state) {
     auto filename{new char[1024]};
-    auto buffer{new char[8e6]};
+    auto buffer{new char[8 * 1024 * 1024]};
     auto index{0UL};
 
     for (auto _ : state) {

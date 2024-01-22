@@ -19,8 +19,8 @@ namespace G::Ptr {
 } // namespace G::Ptr
 
 template <typename T, typename K = G::Ptr::K_ARRAY> class GPtr {
-    public:
-    GPtr(T *ptr) {
+  public:
+    GPtr(T* ptr) {
         m_ptr = ptr;
     }
 
@@ -35,20 +35,20 @@ template <typename T, typename K = G::Ptr::K_ARRAY> class GPtr {
         }
     }
 
-    T *operator()() const {
+    T* operator()() const {
         return m_ptr;
     }
 
-    T *operator->() const {
+    T* operator->() const {
         return m_ptr;
     }
 
-    T &operator*() const {
+    T& operator*() const {
         return *m_ptr;
     }
 
-    private:
-    T *m_ptr;
+  private:
+    T* m_ptr;
 };
 
 #endif // GPTR_HPP

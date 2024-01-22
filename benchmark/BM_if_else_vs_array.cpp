@@ -3,14 +3,14 @@
 #define A 0
 #define B 1
 
-static void BM_if_else_decision(benchmark::State &state) {
+static void BM_if_else_decision(benchmark::State& state) {
     auto buffer_A{new char[20]};
     auto buffer_B{new char[20]};
     auto buffer_id{A};
 
     for (auto _ : state) {
-        char *focus;
-        char *after;
+        char* focus;
+        char* after;
 
         if (buffer_id == A) {
             focus = buffer_A;
@@ -30,14 +30,14 @@ static void BM_if_else_decision(benchmark::State &state) {
     delete[] buffer_B;
 }
 
-static void BM_array_decision(benchmark::State &state) {
+static void BM_array_decision(benchmark::State& state) {
     auto buffer_A{new char[20]};
     auto buffer_B{new char[20]};
     auto buffer_id{A};
 
     struct TBuffer {
-        char *focus;
-        char *after;
+        char* focus;
+        char* after;
     };
 
     TBuffer array[2];

@@ -1,17 +1,17 @@
 #include <benchmark/benchmark.h>
 #include <string.h>
 
-void filename_index(char *dst_filename, const char *src_filename, size_t index) {
+void filename_index(char* dst_filename, const char* src_filename, size_t index) {
     strcpy(dst_filename, src_filename);
     strcpy(dst_filename + strlen(dst_filename), "_000000.bin");
     auto pos{strlen(dst_filename) - 5};
     while (index > 0) {
-        dst_filename[pos--] = '0' + (index % 10);
-        index /= 10;
+        dst_filename[pos--]  = '0' + (index % 10);
+        index               /= 10;
     }
 }
 
-static void BM_filename_snprintf(benchmark::State &state) {
+static void BM_filename_snprintf(benchmark::State& state) {
     for (auto _ : state) {
         auto N{static_cast<size_t>(state.range(0))};
         for (size_t index = 0; index < N; ++index) {
@@ -21,7 +21,7 @@ static void BM_filename_snprintf(benchmark::State &state) {
     }
 }
 
-static void BM_filename_strcpy(benchmark::State &state) {
+static void BM_filename_strcpy(benchmark::State& state) {
     for (auto _ : state) {
         auto N{static_cast<size_t>(state.range(0))};
         for (size_t index = 0; index < N; ++index) {

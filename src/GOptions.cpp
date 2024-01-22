@@ -8,12 +8,12 @@
 
 #include "GOptions.hpp"
 
-#include <filesystem>
-#include <fmt/core.h>
-#include <fstream>
-#include <regex>
+#include <filesystem> // exists, file_size, is_directory, is_regular_file, path
+#include <fmt/core.h> // format
+#include <fstream>    // ifstream, ofstream
+#include <regex>      // regex, regex_match, sregex_token_iterator
 
-auto split = [](const std::string &data, const std::string &regex) {
+auto split = [](const std::string& data, const std::string& regex) {
     std::vector<std::string> tokens;
 
     std::regex                 re{regex};
@@ -25,13 +25,15 @@ auto split = [](const std::string &data, const std::string &regex) {
         ++next;
     }
 
-    auto filter = [](const std::string s) { return (s.size() == 0); };
+    auto filter = [](const std::string s) {
+        return (s.size() == 0);
+    };
     auto junks{std::remove_if(tokens.begin(), tokens.end(), filter)};
     tokens.erase(junks, tokens.end());
     return tokens;
 };
 
-auto join = [](const std::vector<std::string> &data, const std::string &delimiter) {
+auto join = [](const std::vector<std::string>& data, const std::string& delimiter) {
     std::stringstream result;
 
     auto size{data.size() - 1};
@@ -44,7 +46,7 @@ auto join = [](const std::vector<std::string> &data, const std::string &delimite
     return result.str();
 };
 
-template <typename T> auto expand_and_check(const std::string &value, T &type) {
+template <typename T> auto expand_and_check(const std::string& value, T& type) {
     if (std::is_signed_v<T>) {
         auto n1{std::strtoll(value.c_str(), 0, 10)};
         auto n2{static_cast<T>(n1)};
@@ -66,7 +68,7 @@ template <typename T> auto expand_and_check(const std::string &value, T &type) {
     return false;
 }
 
-template <typename T> auto string_to_type(const std::string &value, bool &is_valid) {
+template <typename T> auto string_to_type(const std::string& value, bool& is_valid) {
     T type{};
     is_valid = false;
 
@@ -139,7 +141,8 @@ template <typename T> auto string_to_type(const std::string &value, bool &is_val
         }
     }
 
-    static auto decimals{std::regex("^((-?)|(\\+?))((\\d+\\.\\d*)|(\\d*\\.\\d+))(((e)|(E))((-?)|(\\+?))0?\\d+|)$")};
+    static auto decimals{
+        std::regex("^((-?)|(\\+?))((\\d+\\.\\d*)|(\\d*\\.\\d+))(((e)|(E))((-?)|(\\+?))0?\\d+|)$")};
 
     if (std::regex_match(value, decimals)) {
 
@@ -148,9 +151,9 @@ template <typename T> auto string_to_type(const std::string &value, bool &is_val
                 type     = std::stof(value);
                 is_valid = true;
             }
-            catch (const std::invalid_argument &) {
+            catch (const std::invalid_argument&) {
             }
-            catch (const std::out_of_range &) {
+            catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -160,9 +163,9 @@ template <typename T> auto string_to_type(const std::string &value, bool &is_val
                 type     = std::stod(value);
                 is_valid = true;
             }
-            catch (const std::invalid_argument &) {
+            catch (const std::invalid_argument&) {
             }
-            catch (const std::out_of_range &) {
+            catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -172,9 +175,9 @@ template <typename T> auto string_to_type(const std::string &value, bool &is_val
                 type     = std::stold(value);
                 is_valid = true;
             }
-            catch (const std::invalid_argument &) {
+            catch (const std::invalid_argument&) {
             }
-            catch (const std::out_of_range &) {
+            catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -187,7 +190,7 @@ template <typename T> auto string_to_type(const std::string &value, bool &is_val
                 is_valid = true;
             }
         }
-        catch (const std::invalid_argument &) {
+        catch (const std::invalid_argument&) {
         };
         return type;
     }
@@ -199,8 +202,8 @@ GOptions::Pairs GOptions::ToPairs() {
     Pairs pairs{};
 
     for (auto it{this->begin()}; it != this->end(); ++it) {
-        const auto &label{it->first};
-        const auto &value{it->second};
+        const auto& label{it->first};
+        const auto& value{it->second};
 
         if (value.type() == typeid(bool)) {
             Pair pair{label, (std::any_cast<bool>(value)) ? "true" : "false"};
@@ -277,8 +280,8 @@ GOptions::Pairs GOptions::ToPairs() {
             pairs.push_back(pair);
             continue;
         }
-        if (value.type() == typeid(const char *)) {
-            Pair pair{label, std::string(std::any_cast<const char *>(value))};
+        if (value.type() == typeid(const char*)) {
+            Pair pair{label, std::string(std::any_cast<const char*>(value))};
             pairs.push_back(pair);
             continue;
         }
@@ -303,8 +306,9 @@ GOptions::Sections GOptions::ToSections() {
             const auto label{join(lower, ".")};
             const auto _pair{Pair(label, it->value)};
 
-            auto found{
-            std::find_if(sections.begin(), sections.end(), [title](const Section s) { return (s.title == title); })};
+            auto found{std::find_if(sections.begin(), sections.end(), [title](const Section s) {
+                return (s.title == title);
+            })};
             if (found == sections.end()) {
                 auto _section{Section(title)};
                 _section.pairs.push_back(_pair);
@@ -319,7 +323,7 @@ GOptions::Sections GOptions::ToSections() {
     return sections;
 }
 
-bool GOptions::Read(const std::string &filename) {
+bool GOptions::Read(const std::string& filename) {
     const auto filepath{std::filesystem::path(filename)};
 
     if (std::filesystem::exists(filepath) && std::filesystem::is_regular_file(filepath)) {
@@ -336,7 +340,9 @@ bool GOptions::Read(const std::string &filename) {
                     auto tokens{split(line, "[\\[\\] \\t]")};
                     auto title{tokens[0]};
 
-                    auto filter = [title](const Section s) { return (s.title == title); };
+                    auto filter = [title](const Section s) {
+                        return (s.title == title);
+                    };
                     auto found{std::find_if(sections.begin(), sections.end(), filter)};
                     if (found == sections.end()) {
                         auto section{Section(title)};
@@ -354,8 +360,8 @@ bool GOptions::Read(const std::string &filename) {
             }
             stream.close();
 
-            for (const auto &item : sections) {
-                for (const auto &pair : item.pairs) {
+            for (const auto& item : sections) {
+                for (const auto& pair : item.pairs) {
                     bool     is_valid;
                     std::any value;
 
@@ -420,8 +426,7 @@ bool GOptions::Read(const std::string &filename) {
                         goto jmp_insert_or_assign;
                     }
 
-                jmp_insert_or_assign:
-
+jmp_insert_or_assign:
                     if (is_valid) {
                         auto label{fmt::format("{}.{}", item.title, pair.label)};
                         this->insert_or_assign(label, value);
@@ -434,16 +439,16 @@ bool GOptions::Read(const std::string &filename) {
     return false;
 }
 
-bool GOptions::Write(const std::string &filename) {
+bool GOptions::Write(const std::string& filename) {
     const auto filepath{std::filesystem::path(filename)};
 
     if (!std::filesystem::is_directory(filepath)) {
         auto stream{std::ofstream(filename)};
         auto sections{ToSections()};
 
-        for (const auto &section : sections) {
+        for (const auto& section : sections) {
             stream << fmt::format("[{}]", section.title) << std::endl;
-            for (const auto &pair : section.pairs) {
+            for (const auto& pair : section.pairs) {
                 stream << fmt::format("{} = {}", pair.label, pair.value) << std::endl;
             }
             stream << std::endl;
@@ -455,9 +460,9 @@ bool GOptions::Write(const std::string &filename) {
     return false;
 }
 
-GOptions &GOptions::operator+=(const GOptions &options) {
+GOptions& GOptions::operator+=(const GOptions& options) {
     if (this != &options) {
-        for (const auto &pair : options) {
+        for (const auto& pair : options) {
             this->insert_or_assign(pair.first, pair.second);
         }
     }

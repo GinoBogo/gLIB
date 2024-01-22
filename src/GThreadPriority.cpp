@@ -8,7 +8,7 @@
 
 #include "GThreadPriority.hpp"
 
-#include <sched.h>
+#include <sched.h> // sched_get_priority_max, sched_get_priority_min, sched_priority
 
 namespace GThreadPriority {
 
@@ -19,14 +19,14 @@ namespace GThreadPriority {
         return param.sched_priority;
     }
 
-    int get_priority(std::thread &thread) {
+    int get_priority(std::thread& thread) {
         int         pol;
         sched_param param;
         pthread_getschedparam(thread.native_handle(), &pol, &param);
         return param.sched_priority;
     }
 
-    void get_priority_range(int *min_priority, int *max_priority) {
+    void get_priority_range(int* min_priority, int* max_priority) {
         int         pol;
         sched_param param;
         pthread_getschedparam(pthread_self(), &pol, &param);
@@ -34,7 +34,7 @@ namespace GThreadPriority {
         *max_priority = sched_get_priority_max(pol);
     }
 
-    void get_priority_range(std::thread &thread, int *min_priority, int *max_priority) {
+    void get_priority_range(std::thread& thread, int* min_priority, int* max_priority) {
         int         pol;
         sched_param param;
         pthread_getschedparam(thread.native_handle(), &pol, &param);
@@ -50,7 +50,7 @@ namespace GThreadPriority {
         return 0 == pthread_setschedparam(pthread_self(), pol, &param);
     }
 
-    bool set_priority(std::thread &thread, int priority) {
+    bool set_priority(std::thread& thread, int priority) {
         int         pol;
         sched_param param;
         pthread_getschedparam(thread.native_handle(), &pol, &param);

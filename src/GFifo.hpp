@@ -9,11 +9,11 @@
 #ifndef GFIFO_HPP
 #define GFIFO_HPP
 
-#include <condition_variable>
-#include <mutex>
+#include <condition_variable> // condition_variable
+#include <mutex>              // lock_guard, mutex, unique_lock
 
 class GFifo {
-    public:
+  public:
     // clang-format off
     struct WAIT_IF_EMPTY    { bool _; };
     struct WAIT_IF_FULL     { bool _; };
@@ -31,9 +31,9 @@ class GFifo {
 
     void Zeros() __attribute__((cold));
 
-    bool Push(void *src_buffer, size_t src_bytes) __attribute__((hot));
+    bool Push(void* src_buffer, size_t src_bytes) __attribute__((hot));
 
-    bool Pop(void *dst_buffer, size_t *dst_bytes) __attribute__((hot));
+    bool Pop(void* dst_buffer, size_t* dst_bytes) __attribute__((hot));
 
     template <typename T> void Acquire() {
         if constexpr (std::is_same_v<T, WAIT_IF_EMPTY>) {
@@ -81,12 +81,12 @@ class GFifo {
         return m_underflow;
     }
 
-    private:
+  private:
     const size_t m_bytes;
     const size_t m_depth;
     size_t       m_iR;
     size_t       m_iW;
-    char *       m_data;
+    char*        m_data;
     size_t       m_free;
     size_t       m_used;
     size_t       m_overflow;
