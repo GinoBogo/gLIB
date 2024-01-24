@@ -58,6 +58,10 @@ endif()
 include_directories("/usr/local/include")
 link_directories("/usr/local/lib")
 
+add_library(gLIB OBJECT
+../src/GUtils.cpp
+)
+
 add_executable(BM_aligned_memory
 BM_aligned_memory.cpp
 )
@@ -77,3 +81,8 @@ add_executable(BM_ofstream_vs_fwrite
 BM_ofstream_vs_fwrite.cpp
 )
 target_link_libraries(BM_ofstream_vs_fwrite benchmark)
+
+add_executable(BM_memset_vs_gb_zeros
+BM_memset_vs_gb_zeros.cpp
+)
+target_link_libraries(BM_memset_vs_gb_zeros benchmark gLIB)
