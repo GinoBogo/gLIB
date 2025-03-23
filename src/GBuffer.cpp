@@ -8,15 +8,16 @@
 
 #include "GBuffer.hpp"
 
-#include "GLogger.hpp"
-
-#include <cstdlib>    // free, malloc, size_t
-#include <cstring>    // memcpy, memset
 #include <fmt/core.h> // format
+
+#include <cstdlib> // free, malloc, size_t
+#include <cstring> // memcpy, memset
+
+#include "GLogger.hpp"
 
 GBuffer::GBuffer(size_t bytes) {
     m_size = bytes;
-    m_data = static_cast<char*>(std::malloc(m_size));
+    m_data = static_cast<char *>(std::malloc(m_size));
     Zeros();
 }
 
@@ -37,7 +38,7 @@ void GBuffer::Zeros() {
     std::memset(m_data, 0, m_size);
 }
 
-bool GBuffer::Read(void* dst_buffer, size_t dst_bytes) {
+bool GBuffer::Read(void *dst_buffer, size_t dst_bytes) {
     if (dst_bytes <= m_size || dst_buffer == nullptr) {
         std::memcpy(dst_buffer, m_data, dst_bytes);
         m_next = m_data + dst_bytes;
@@ -49,7 +50,7 @@ bool GBuffer::Read(void* dst_buffer, size_t dst_bytes) {
     return false;
 }
 
-bool GBuffer::ReadNext(void* dst_buffer, size_t dst_bytes, bool* is_empty) {
+bool GBuffer::ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) {
     if (dst_bytes <= m_rest || dst_buffer == nullptr || is_empty == nullptr) {
         std::memcpy(dst_buffer, m_next, dst_bytes);
         m_next += dst_bytes;
@@ -62,7 +63,8 @@ bool GBuffer::ReadNext(void* dst_buffer, size_t dst_bytes, bool* is_empty) {
     LOG_WRITE(error, fmt::format("\"{}(...)\" has wrong arguments", __func__));
     return false;
 }
-bool GBuffer::Write(const void* src_buffer, size_t src_bytes) {
+
+bool GBuffer::Write(const void *src_buffer, size_t src_bytes) {
     if (src_bytes <= m_size || src_buffer == nullptr) {
         std::memcpy(m_data, src_buffer, src_bytes);
         m_next = m_data + src_bytes;
@@ -74,7 +76,7 @@ bool GBuffer::Write(const void* src_buffer, size_t src_bytes) {
     return false;
 }
 
-bool GBuffer::WriteNext(const void* src_buffer, size_t src_bytes, bool* is_full) {
+bool GBuffer::WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full) {
     if (src_bytes <= m_rest || src_buffer == nullptr || is_full == nullptr) {
         std::memcpy(m_next, src_buffer, src_bytes);
         m_next += src_bytes;
@@ -109,8 +111,7 @@ bool GBuffer::ShiftNext(long bytes) {
         m_next += static_cast<size_t>(bytes);
         m_rest -= static_cast<size_t>(bytes);
         m_used += static_cast<size_t>(bytes);
-    }
-    else {
+    } else {
         m_next -= static_cast<size_t>(-bytes);
         m_rest += static_cast<size_t>(-bytes);
         m_used -= static_cast<size_t>(-bytes);

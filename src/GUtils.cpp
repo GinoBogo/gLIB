@@ -77,10 +77,9 @@
         _dst[i] = x;   \
         ++i;
 
-void gb_memcpy(void* dst, void* src, size_t len) {
-
-    char* _dst = (char*)dst;
-    char* _src = (char*)src;
+void gb_memcpy(void *dst, void *src, size_t len) {
+    char *_dst = (char *)dst;
+    char *_src = (char *)src;
 
     size_t i   = 0;
     size_t div = len / 8;
@@ -92,7 +91,6 @@ void gb_memcpy(void* dst, void* src, size_t len) {
 
         case 0:
             while (!(div == 0)) {
-
                 --div;
                 _dst[i] = _src[i];
                 ++i;
@@ -103,9 +101,8 @@ void gb_memcpy(void* dst, void* src, size_t len) {
     }
 }
 
-void gb_memset(void* dst, char val, size_t len) {
-
-    char* _dst = (char*)dst;
+void gb_memset(void *dst, char val, size_t len) {
+    char *_dst = (char *)dst;
 
     size_t i   = 0;
     size_t div = len / 8;
@@ -117,7 +114,6 @@ void gb_memset(void* dst, char val, size_t len) {
 
         case 0:
             while (!(div == 0)) {
-
                 --div;
                 _dst[i] = val;
                 ++i;
@@ -128,9 +124,8 @@ void gb_memset(void* dst, char val, size_t len) {
     }
 }
 
-void gb_zeros(void* dst, size_t len) {
-
-    char* _dst = (char*)dst;
+void gb_zeros(void *dst, size_t len) {
+    char *_dst = (char *)dst;
 
     size_t i   = 0;
     size_t div = len / 8;
@@ -142,7 +137,6 @@ void gb_zeros(void* dst, size_t len) {
 
         case 0:
             while (!(div == 0)) {
-
                 --div;
                 _dst[i] = 0;
                 ++i;

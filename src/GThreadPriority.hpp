@@ -16,9 +16,9 @@ namespace GThreadPriority {
 
     int get_priority(std::thread& thread);
 
-    void get_priority_range(int* min_priority, int* max_priority);
+    void get_priority_range(int *min_priority, int *max_priority);
 
-    void get_priority_range(std::thread& thread, int* min_priority, int* max_priority);
+    void get_priority_range(std::thread& thread, int *min_priority, int *max_priority);
 
     bool set_priority(int priority);
 

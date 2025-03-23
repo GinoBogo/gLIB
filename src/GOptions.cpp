@@ -8,8 +8,9 @@
 
 #include "GOptions.hpp"
 
-#include <filesystem> // exists, file_size, is_directory, is_regular_file, path
 #include <fmt/core.h> // format
+
+#include <filesystem> // exists, file_size, is_directory, is_regular_file, path
 #include <fstream>    // ifstream, ofstream
 #include <regex>      // regex, regex_match, sregex_token_iterator
 
@@ -25,9 +26,7 @@ auto split = [](const std::string& data, const std::string& regex) {
         ++next;
     }
 
-    auto filter = [](const std::string s) {
-        return (s.size() == 0);
-    };
+    auto filter = [](const std::string s) { return (s.size() == 0); };
     auto junks{std::remove_if(tokens.begin(), tokens.end(), filter)};
     tokens.erase(junks, tokens.end());
     return tokens;
@@ -46,7 +45,8 @@ auto join = [](const std::vector<std::string>& data, const std::string& delimite
     return result.str();
 };
 
-template <typename T> auto expand_and_check(const std::string& value, T& type) {
+template <typename T>
+auto expand_and_check(const std::string& value, T& type) {
     if (std::is_signed_v<T>) {
         auto n1{std::strtoll(value.c_str(), 0, 10)};
         auto n2{static_cast<T>(n1)};
@@ -55,8 +55,7 @@ template <typename T> auto expand_and_check(const std::string& value, T& type) {
             type = n2;
             return true;
         }
-    }
-    else {
+    } else {
         auto n1{std::strtoull(value.c_str(), 0, 10)};
         auto n2{static_cast<T>(n1)};
         auto n3{static_cast<unsigned long long>(n2)};
@@ -68,7 +67,8 @@ template <typename T> auto expand_and_check(const std::string& value, T& type) {
     return false;
 }
 
-template <typename T> auto string_to_type(const std::string& value, bool& is_valid) {
+template <typename T>
+auto string_to_type(const std::string& value, bool& is_valid) {
     T type{};
     is_valid = false;
 
@@ -76,8 +76,7 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
         if (value == "0" || value == "false" || value == "FALSE") {
             type     = false;
             is_valid = true;
-        }
-        else if (value == "1" || value == "true" || value == "TRUE") {
+        } else if (value == "1" || value == "true" || value == "TRUE") {
             type     = true;
             is_valid = true;
         }
@@ -87,7 +86,6 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
     static auto integers{std::regex("^((-?)|(\\+?))\\d+(u?l?l?)$")};
 
     if (std::regex_match(value, integers)) {
-
         if constexpr (std::is_same_v<T, char>) {
             is_valid = expand_and_check<T>(value, type);
             return type;
@@ -145,15 +143,12 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
         std::regex("^((-?)|(\\+?))((\\d+\\.\\d*)|(\\d*\\.\\d+))(((e)|(E))((-?)|(\\+?))0?\\d+|)$")};
 
     if (std::regex_match(value, decimals)) {
-
         if constexpr (std::is_same_v<T, float>) {
             try {
                 type     = std::stof(value);
                 is_valid = true;
-            }
-            catch (const std::invalid_argument&) {
-            }
-            catch (const std::out_of_range&) {
+            } catch (const std::invalid_argument&) {
+            } catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -162,10 +157,8 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
             try {
                 type     = std::stod(value);
                 is_valid = true;
-            }
-            catch (const std::invalid_argument&) {
-            }
-            catch (const std::out_of_range&) {
+            } catch (const std::invalid_argument&) {
+            } catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -174,10 +167,8 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
             try {
                 type     = std::stold(value);
                 is_valid = true;
-            }
-            catch (const std::invalid_argument&) {
-            }
-            catch (const std::out_of_range&) {
+            } catch (const std::invalid_argument&) {
+            } catch (const std::out_of_range&) {
             };
             return type;
         }
@@ -189,8 +180,7 @@ template <typename T> auto string_to_type(const std::string& value, bool& is_val
                 type     = value;
                 is_valid = true;
             }
-        }
-        catch (const std::invalid_argument&) {
+        } catch (const std::invalid_argument&) {
         };
         return type;
     }
@@ -280,8 +270,8 @@ GOptions::Pairs GOptions::ToPairs() {
             pairs.push_back(pair);
             continue;
         }
-        if (value.type() == typeid(const char*)) {
-            Pair pair{label, std::string(std::any_cast<const char*>(value))};
+        if (value.type() == typeid(const char *)) {
+            Pair pair{label, std::string(std::any_cast<const char *>(value))};
             pairs.push_back(pair);
             continue;
         }
@@ -306,15 +296,13 @@ GOptions::Sections GOptions::ToSections() {
             const auto label{join(lower, ".")};
             const auto _pair{Pair(label, it->value)};
 
-            auto found{std::find_if(sections.begin(), sections.end(), [title](const Section s) {
-                return (s.title == title);
-            })};
+            auto found{std::find_if(
+                sections.begin(), sections.end(), [title](const Section s) { return (s.title == title); })};
             if (found == sections.end()) {
                 auto _section{Section(title)};
                 _section.pairs.push_back(_pair);
                 sections.push_back(_section);
-            }
-            else {
+            } else {
                 found->pairs.push_back(_pair);
             }
         }
@@ -340,16 +328,13 @@ bool GOptions::Read(const std::string& filename) {
                     auto tokens{split(line, "[\\[\\] \\t]")};
                     auto title{tokens[0]};
 
-                    auto filter = [title](const Section s) {
-                        return (s.title == title);
-                    };
+                    auto filter = [title](const Section s) { return (s.title == title); };
                     auto found{std::find_if(sections.begin(), sections.end(), filter)};
                     if (found == sections.end()) {
                         auto section{Section(title)};
                         sections.push_back(section);
                     }
-                }
-                else {
+                } else {
                     auto tokens{split(line, "[= \\t]")};
                     if (tokens.size() == 2) {
                         auto pair{Pair(tokens[0], tokens[1])};

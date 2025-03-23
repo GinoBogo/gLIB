@@ -9,27 +9,30 @@
 #ifndef GUDPLINK_HPP
 #define GUDPLINK_HPP
 
-#include "GBuffer.hpp" // GBuffer
+#include <any>     // any
+#include <cstdint> // uint16_t
+#include <string>  // string
 
-#include <any>    // any
-#include <string> // string
+#include "GBuffer.hpp" // GBuffer
 
 namespace g_udp_link {
     struct MASTER {};
+
     struct SLAVE {};
 
     struct WorkerArgs {
-        GBuffer*  query_buffer;
-        GBuffer*  reply_buffer;
-        std::any* custom_data;
+        GBuffer  *query_buffer;
+        GBuffer  *reply_buffer;
+        std::any *custom_data;
     };
 
     typedef bool (*WorkerFunc)(WorkerArgs args);
 
 } // namespace g_udp_link
 
-template <typename T> class GUdpLink {
-  public:
+template <typename T>
+class GUdpLink {
+   public:
     GUdpLink(const std::string& addr, uint16_t port);
     ~GUdpLink();
 
@@ -41,8 +44,8 @@ template <typename T> class GUdpLink {
     // NOTE: use "func" to process the QUERY content
     bool WaitQuery_SendReply(g_udp_link::WorkerFunc func, g_udp_link::WorkerArgs args);
 
-  private:
-    void* m_udp_link{nullptr};
+   private:
+    void *m_udp_link{nullptr};
 };
 
 #endif // GUDPLINK_HPP

@@ -9,25 +9,32 @@
 #ifndef GPINGPONG_HPP
 #define GPINGPONG_HPP
 
-#include "GBuffer.hpp"
-
 #include <any>                // any
 #include <condition_variable> // condition_variable
 #include <thread>             // thread
 
-class GPingPong {
-  public:
-    enum StreamType { READER, WRITER };
+#include "GBuffer.hpp"
 
-    struct WorkerArgs {
-        GBuffer*  buffer;
-        size_t*   buffer_counter;
-        std::any* user_data;
+class GPingPong {
+   public:
+    enum StreamType {
+        READER,
+        WRITER
     };
 
-    typedef void (*WorkerFunc)(WorkerArgs* args);
+    struct WorkerArgs {
+        GBuffer  *buffer;
+        size_t   *buffer_counter;
+        std::any *user_data;
+    };
 
-    GPingPong(size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any* user_data = nullptr);
+    typedef void (*WorkerFunc)(WorkerArgs *args);
+
+    GPingPong(size_t     chunk_bytes,
+              size_t     chunks_number,
+              StreamType stream_type,
+              WorkerFunc worker_func,
+              std::any  *user_data = nullptr);
 
     ~GPingPong();
 
@@ -35,23 +42,24 @@ class GPingPong {
 
     bool SetThreadPriority(int priority);
 
-    bool Read(void* dst_buffer, size_t dst_bytes);
+    bool Read(void *dst_buffer, size_t dst_bytes);
 
-    bool Write(void* src_buffer, size_t src_bytes);
+    bool Write(void *src_buffer, size_t src_bytes);
 
-  private:
-    template <typename T> inline bool UseNext(void* buffer, size_t bytes);
+   private:
+    template <typename T>
+    inline bool UseNext(void *buffer, size_t bytes);
 
     struct ThreadArgs {
-        bool*                    thread_exit;
-        bool*                    thread_busy;
-        std::mutex*              thread_mutex;
-        std::condition_variable* thread_order;
+        bool                    *thread_exit;
+        bool                    *thread_busy;
+        std::mutex              *thread_mutex;
+        std::condition_variable *thread_order;
     };
 
     struct TBufferPair {
-        GBuffer* focus;
-        GBuffer* after;
+        GBuffer *focus;
+        GBuffer *after;
     };
 
     const size_t            m_chunk_bytes;

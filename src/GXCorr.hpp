@@ -9,18 +9,21 @@
 #ifndef GXCORR_HPP
 #define GXCORR_HPP
 
-#include <cmath>   // sqrt
 #include <fftw3.h> // FFTW_BACKWARD, FFTW_ESTIMATE, FFTW_FORWARD, fftw_complex, fftw_destroy_plan
+
+#include <cmath> // sqrt
 
 namespace G::XCorr {
     // clang-format off
     struct OP_NORMAL  { bool _; };
     struct OP_SHIFTED { bool _; };
+
     // clang-format on
 } // namespace G::XCorr
 
-template <size_t NUM> class GXCorr {
-  public:
+template <size_t NUM>
+class GXCorr {
+   public:
     GXCorr() {
         m_plan_A = fftw_plan_dft_1d(X_NUM, m_signal_A, m_result_A, FFTW_FORWARD, FFTW_ESTIMATE);
         m_plan_B = fftw_plan_dft_1d(X_NUM, m_signal_B, m_result_B, FFTW_FORWARD, FFTW_ESTIMATE);
@@ -33,7 +36,8 @@ template <size_t NUM> class GXCorr {
         fftw_destroy_plan(m_plan_X);
     }
 
-    template <typename T = double> bool SetSignalA(T* signal_buffer, size_t signal_length) {
+    template <typename T = double>
+    bool SetSignalA(T *signal_buffer, size_t signal_length) {
         if (!(signal_length & 1) && (signal_length <= 2 * NUM)) {
             auto K{signal_length / 2};
             for (size_t i{0}; i < K; ++i) {
@@ -50,7 +54,8 @@ template <size_t NUM> class GXCorr {
         return false;
     }
 
-    template <typename T = double> bool SetSignalB(T* signal_buffer, size_t signal_length) {
+    template <typename T = double>
+    bool SetSignalB(T *signal_buffer, size_t signal_length) {
         if (!(signal_length & 1) && (signal_length <= 2 * NUM)) {
             auto K{signal_length / 2};
             for (size_t i{0}; i < K; ++i) {
@@ -67,9 +72,10 @@ template <size_t NUM> class GXCorr {
         return false;
     }
 
-    template <typename OP> void Execute() {
-        auto const Re{0};
-        auto const Im{1};
+    template <typename OP>
+    void Execute() {
+        const auto Re{0};
+        const auto Im{1};
 
         for (size_t i{0}; i < X_NUM; ++i) {
             m_signal_X[i][Re] = m_result_A[i][Re] * m_result_B[i][Re] + m_result_A[i][Im] * m_result_B[i][Im];
@@ -97,14 +103,14 @@ template <size_t NUM> class GXCorr {
         }
     }
 
-    template <typename T = double> bool GetResultX(T* result_buffer, size_t result_length) {
+    template <typename T = double>
+    bool GetResultX(T *result_buffer, size_t result_length) {
         if (result_length == X_NUM) {
             for (size_t i{0}; i < X_NUM; ++i) {
                 if constexpr (std::is_floating_point_v<T>) {
                     result_buffer[2 * i + 0] = m_result_X[i][0];
                     result_buffer[2 * i + 1] = m_result_X[i][1];
-                }
-                else {
+                } else {
                     result_buffer[2 * i + 0] = std::round(m_result_X[i][0]);
                     result_buffer[2 * i + 1] = std::round(m_result_X[i][1]);
                 }
@@ -114,9 +120,9 @@ template <size_t NUM> class GXCorr {
         return false;
     }
 
-    void MaxPeak(double* value, size_t* index) {
-        auto const Re{0};
-        auto const Im{1};
+    void MaxPeak(double *value, size_t *index) {
+        const auto Re{0};
+        const auto Im{1};
 
         *value = 0;
         *index = 0;
@@ -130,23 +136,15 @@ template <size_t NUM> class GXCorr {
         *value = std::sqrt(*value);
     }
 
-    auto signal_A() {
-        return m_signal_A;
-    }
+    auto signal_A() { return m_signal_A; }
 
-    auto signal_B() {
-        return m_signal_B;
-    }
+    auto signal_B() { return m_signal_B; }
 
-    auto result_X() {
-        return m_result_X;
-    }
+    auto result_X() { return m_result_X; }
 
-    auto length() {
-        return X_NUM;
-    }
+    auto length() { return X_NUM; }
 
-  private:
+   private:
     const size_t X_NUM{2 * NUM - 1};
 
     fftw_plan m_plan_A{nullptr};

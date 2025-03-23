@@ -12,7 +12,7 @@
 #include <cstddef> // size_t
 
 class GBuffer {
-  public:
+   public:
     GBuffer(size_t bytes);
 
     ~GBuffer();
@@ -21,37 +21,29 @@ class GBuffer {
 
     void Zeros() __attribute__((cold));
 
-    bool Read(void* dst_buffer, size_t dst_bytes);
+    bool Read(void *dst_buffer, size_t dst_bytes);
 
-    bool ReadNext(void* dst_buffer, size_t dst_bytes, bool* is_empty) __attribute__((hot));
+    bool ReadNext(void *dst_buffer, size_t dst_bytes, bool *is_empty) __attribute__((hot));
 
-    bool Write(const void* src_buffer, size_t src_bytes);
+    bool Write(const void *src_buffer, size_t src_bytes);
 
-    bool WriteNext(const void* src_buffer, size_t src_bytes, bool* is_full) __attribute__((hot));
+    bool WriteNext(const void *src_buffer, size_t src_bytes, bool *is_full) __attribute__((hot));
 
     bool SetUsed(size_t bytes) __attribute__((hot));
 
     bool ShiftNext(long bytes);
 
-    inline auto* data() {
-        return m_data;
-    }
+    inline auto *data() { return m_data; }
 
-    inline auto size() {
-        return m_size;
-    }
+    inline auto size() { return m_size; }
 
-    inline auto rest() {
-        return m_rest;
-    }
+    inline auto rest() { return m_rest; }
 
-    inline auto used() {
-        return m_used;
-    }
+    inline auto used() { return m_used; }
 
-  private:
-    char*  m_data;
-    char*  m_next;
+   private:
+    char  *m_data;
+    char  *m_next;
     size_t m_size;
     size_t m_rest;
     size_t m_used;

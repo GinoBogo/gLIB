@@ -9,42 +9,39 @@
 #ifndef GUDPSERVER_HPP
 #define GUDPSERVER_HPP
 
-#include "GBuffer.hpp"
-
-#include <cstdint>      // uint16_t
-#include <string>       //string
 #include <sys/socket.h> // sockaddr_storage, socklen_t
 
+#include <cstdint> // uint16_t
+#include <string>  //string
+
+#include "GBuffer.hpp"
+
 class GUdpServer {
-  public:
+   public:
     GUdpServer(const std::string& local_addr, uint16_t local_port);
     ~GUdpServer();
 
-    auto is_ready() {
-        return m_is_ready;
-    }
+    auto is_ready() { return m_is_ready; }
 
     bool Receive();
 
-    bool Receive(GBuffer* dst_buffer);
+    bool Receive(GBuffer *dst_buffer);
 
-    bool Receive(void* dst_buffer, size_t* dst_bytes) __attribute__((hot));
+    bool Receive(void *dst_buffer, size_t *dst_bytes) __attribute__((hot));
 
     bool Send();
 
-    bool Send(GBuffer* src_buffer);
+    bool Send(GBuffer *src_buffer);
 
-    bool Send(void* scr_buffer, size_t src_bytes) __attribute__((hot));
+    bool Send(void *scr_buffer, size_t src_bytes) __attribute__((hot));
 
-    auto buffer() {
-        return m_buffer;
-    }
+    auto buffer() { return m_buffer; }
 
-  private:
+   private:
     int                     m_socket_fd{-1};
-    GBuffer*                m_buffer{nullptr};
+    GBuffer                *m_buffer{nullptr};
     bool                    m_is_ready{false};
-    struct sockaddr_storage m_peer_addr {};
+    struct sockaddr_storage m_peer_addr{};
     socklen_t               m_peer_addr_len{sizeof(struct sockaddr_storage)};
 };
 

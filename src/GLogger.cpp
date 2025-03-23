@@ -8,10 +8,11 @@
 
 #include "GLogger.hpp"
 
-#include <filesystem>   // path
 #include <fmt/chrono.h> // localtime
-#include <fstream>      // ofstream
-#include <iostream>     // cout, endl
+
+#include <filesystem> // path
+#include <fstream>    // ofstream
+#include <iostream>   // cout, endl
 
 namespace GLogger {
 
@@ -19,7 +20,7 @@ namespace GLogger {
 
     static std::ofstream fout{};
 
-    static const char* flags[6] = {"DEBUG", "ERROR", "FATAL", "INFO", "TRACE", "WARNING"};
+    static const char *flags[6] = {"DEBUG", "ERROR", "FATAL", "INFO", "TRACE", "WARNING"};
 
     std::string GetDateTime() {
         auto tp{std::chrono::system_clock::now()};
@@ -33,14 +34,13 @@ namespace GLogger {
         is_open = fout.is_open();
         if (is_open) {
             LOG_WRITE(warning, "File stream already opened");
-        }
-        else {
+        } else {
             fout    = std::ofstream(filename);
             is_open = fout.is_open();
         }
     }
 
-    void Write(Type type, const char *file, const size_t line, const std::string &message) {
+    void Write(Type type, const char *file, const size_t line, const std::string& message) {
         auto time{GetDateTime()};
         auto flag{flags[type]};
         auto name{std::filesystem::path(file).filename()};

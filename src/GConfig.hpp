@@ -12,16 +12,14 @@
 #include "GOptions.hpp" // GOptions
 
 class GConfig {
-  public:
+   public:
     bool ReadOptions(const std::string& filename);
 
     bool WriteOptions(const std::string& filename);
 
-    auto options() {
-        return &m_options;
-    }
+    auto options() { return &m_options; }
 
-  private:
+   private:
     GOptions m_options;
 };
 

@@ -8,16 +8,15 @@
 
 #include "GConfig.hpp"
 
-#include "GLogger.hpp" // LOG_WRITE, error, trace, warning
-
 #include <fmt/core.h> // format
+
+#include "GLogger.hpp" // LOG_WRITE, error, trace, warning
 
 bool GConfig::ReadOptions(const std::string& filename) {
     if (m_options.Read(filename)) {
         LOG_WRITE(trace, fmt::format("The \"{}\" configuration file has been loaded", filename));
         return true;
-    }
-    else {
+    } else {
         LOG_WRITE(error, fmt::format("Unable to load the \"{}\" configuration file", filename));
 
         if (m_options.size() > 0) {

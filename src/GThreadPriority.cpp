@@ -26,7 +26,7 @@ namespace GThreadPriority {
         return param.sched_priority;
     }
 
-    void get_priority_range(int* min_priority, int* max_priority) {
+    void get_priority_range(int *min_priority, int *max_priority) {
         int         pol;
         sched_param param;
         pthread_getschedparam(pthread_self(), &pol, &param);
@@ -34,7 +34,7 @@ namespace GThreadPriority {
         *max_priority = sched_get_priority_max(pol);
     }
 
-    void get_priority_range(std::thread& thread, int* min_priority, int* max_priority) {
+    void get_priority_range(std::thread& thread, int *min_priority, int *max_priority) {
         int         pol;
         sched_param param;
         pthread_getschedparam(thread.native_handle(), &pol, &param);

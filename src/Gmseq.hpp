@@ -12,9 +12,9 @@
 #include <cstddef> // size_t
 #include <vector>  // vector
 
-template <typename T, size_t L> class Gmseq {
-
-  public:
+template <typename T, size_t L>
+class Gmseq {
+   public:
     Gmseq() {
         m_degree = L;
         Reset();
@@ -143,7 +143,7 @@ template <typename T, size_t L> class Gmseq {
         return feed;
     }
 
-  private:
+   private:
     size_t m_degree;
     T      m_regs[L];
     T      m_taps[L];

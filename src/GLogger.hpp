@@ -19,15 +19,27 @@
 
 namespace GLogger {
 
-    enum Type { debug, error, fatal, info, trace, warning };
+    enum Type {
+        debug,
+        error,
+        fatal,
+        info,
+        trace,
+        warning
+    };
 
-    enum Alignment { left, center, right };
+    enum Alignment {
+        left,
+        center,
+        right
+    };
 
-    void Initialize(const std::string &filename);
+    void Initialize(const std::string& filename);
 
-    void Write(Type type, const char *file, size_t line, const std::string &message);
+    void Write(Type type, const char *file, size_t line, const std::string& message);
 
-    template <class... Args> void Format(Type type, const char *file, size_t line, const char *format, Args... args) {
+    template <class... Args>
+    void Format(Type type, const char *file, size_t line, const char *format, Args... args) {
         char msg[LOG_MSG_MAXLEN];
         snprintf(msg, sizeof msg, format, args...);
         Write(type, file, line, msg);

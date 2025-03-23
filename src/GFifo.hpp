@@ -13,12 +13,13 @@
 #include <mutex>              // lock_guard, mutex, unique_lock
 
 class GFifo {
-  public:
+   public:
     // clang-format off
     struct WAIT_IF_EMPTY    { bool _; };
     struct WAIT_IF_FULL     { bool _; };
     struct SIGNAL_NOT_EMPTY { bool _; };
     struct SIGNAL_NOT_FULL  { bool _; };
+
     // clang-format on
 
     GFifo(size_t bytes, size_t depth);
@@ -31,11 +32,12 @@ class GFifo {
 
     void Zeros() __attribute__((cold));
 
-    bool Push(void* src_buffer, size_t src_bytes) __attribute__((hot));
+    bool Push(void *src_buffer, size_t src_bytes) __attribute__((hot));
 
-    bool Pop(void* dst_buffer, size_t* dst_bytes) __attribute__((hot));
+    bool Pop(void *dst_buffer, size_t *dst_bytes) __attribute__((hot));
 
-    template <typename T> void Acquire() {
+    template <typename T>
+    void Acquire() {
         if constexpr (std::is_same_v<T, WAIT_IF_EMPTY>) {
             std::unique_lock<std::mutex> lock{m_mutex};
             while (!m_used) {
@@ -50,7 +52,8 @@ class GFifo {
         }
     }
 
-    template <typename T> void Release() {
+    template <typename T>
+    void Release() {
         if constexpr (std::is_same_v<T, SIGNAL_NOT_EMPTY>) {
             std::lock_guard<std::mutex> lock{m_mutex};
             if (m_used) {
@@ -65,28 +68,20 @@ class GFifo {
         }
     }
 
-    size_t bytes() {
-        return m_bytes - sizeof(size_t);
-    }
+    size_t bytes() { return m_bytes - sizeof(size_t); }
 
-    size_t depth() {
-        return m_depth;
-    }
+    size_t depth() { return m_depth; }
 
-    size_t overflow() {
-        return m_overflow;
-    }
+    size_t overflow() { return m_overflow; }
 
-    size_t underflow() {
-        return m_underflow;
-    }
+    size_t underflow() { return m_underflow; }
 
-  private:
+   private:
     const size_t m_bytes;
     const size_t m_depth;
     size_t       m_iR;
     size_t       m_iW;
-    char*        m_data;
+    char        *m_data;
     size_t       m_free;
     size_t       m_used;
     size_t       m_overflow;

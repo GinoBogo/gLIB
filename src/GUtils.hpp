@@ -340,7 +340,7 @@
 // clang-format on
 
 #define BY_VAL(x) (uint32_t)(x)
-#define BY_REF(x) *((uint32_t*)&(x))
+#define BY_REF(x) *((uint32_t *)&(x))
 
 #define SET_MASK(mask_bit, mask_pos) (BY_VAL(mask_bit) << BY_VAL(mask_pos))
 #define NOT_MASK(mask_bit, mask_pos) (~SET_MASK(mask_bit, mask_pos))
@@ -356,57 +356,57 @@
     CLS_BITS(dst, mask_bit, mask_pos) | SHL_BITS(val, mask_bit, mask_pos)
 
 // MEMORY/BUFFER macros
-#define GB_ARRAY_32(x) ((uint32_t*)&(x))
+#define GB_ARRAY_32(x) ((uint32_t *)&(x))
 
-#define GB_COPY_08(d, s, n)                                                     \
-    {                                                                           \
-        for (size_t i = 0; i < n; ++i) ((uint8_t*)(d))[i] = ((uint8_t*)(s))[i]; \
-    }
-
-#define GB_COPY_16(d, s, n)                                                       \
+#define GB_COPY_08(d, s, n)                                                       \
     {                                                                             \
-        for (size_t i = 0; i < n; ++i) ((uint16_t*)(d))[i] = ((uint16_t*)(s))[i]; \
+        for (size_t i = 0; i < n; ++i) ((uint8_t *)(d))[i] = ((uint8_t *)(s))[i]; \
     }
 
-#define GB_COPY_32(d, s, n)                                                       \
-    {                                                                             \
-        for (size_t i = 0; i < n; ++i) ((uint32_t*)(d))[i] = ((uint32_t*)(s))[i]; \
+#define GB_COPY_16(d, s, n)                                                         \
+    {                                                                               \
+        for (size_t i = 0; i < n; ++i) ((uint16_t *)(d))[i] = ((uint16_t *)(s))[i]; \
     }
 
-#define GB_SET_08(x, s)                                                  \
-    {                                                                    \
-        const size_t N = sizeof(x);                                      \
-        for (size_t i = 0; i < N; ++i) ((uint8_t*)&(x))[i] = (uint8_t)s; \
+#define GB_COPY_32(d, s, n)                                                         \
+    {                                                                               \
+        for (size_t i = 0; i < n; ++i) ((uint32_t *)(d))[i] = ((uint32_t *)(s))[i]; \
     }
 
-#define GB_SET_16(x, s)                                                    \
-    {                                                                      \
-        const size_t N = sizeof(x) / 2;                                    \
-        for (size_t i = 0; i < N; ++i) ((uint16_t*)&(x))[i] = (uint16_t)s; \
+#define GB_SET_08(x, s)                                                   \
+    {                                                                     \
+        const size_t N = sizeof(x);                                       \
+        for (size_t i = 0; i < N; ++i) ((uint8_t *)&(x))[i] = (uint8_t)s; \
     }
 
-#define GB_SET_32(x, s)                                                    \
-    {                                                                      \
-        const size_t N = sizeof(x) / 4;                                    \
-        for (size_t i = 0; i < N; ++i) ((uint32_t*)&(x))[i] = (uint32_t)s; \
+#define GB_SET_16(x, s)                                                     \
+    {                                                                       \
+        const size_t N = sizeof(x) / 2;                                     \
+        for (size_t i = 0; i < N; ++i) ((uint16_t *)&(x))[i] = (uint16_t)s; \
     }
 
-#define GB_ZEROS_08(x)                                          \
-    {                                                           \
-        const size_t N = sizeof(x);                             \
-        for (size_t i = 0; i < N; ++i) ((uint8_t*)&(x))[i] = 0; \
+#define GB_SET_32(x, s)                                                     \
+    {                                                                       \
+        const size_t N = sizeof(x) / 4;                                     \
+        for (size_t i = 0; i < N; ++i) ((uint32_t *)&(x))[i] = (uint32_t)s; \
     }
 
-#define GB_ZEROS_16(x)                                           \
+#define GB_ZEROS_08(x)                                           \
     {                                                            \
-        const size_t N = sizeof(x) / 2;                          \
-        for (size_t i = 0; i < N; ++i) ((uint16_t*)&(x))[i] = 0; \
+        const size_t N = sizeof(x);                              \
+        for (size_t i = 0; i < N; ++i) ((uint8_t *)&(x))[i] = 0; \
     }
 
-#define GB_ZEROS_32(x)                                           \
-    {                                                            \
-        const size_t N = sizeof(x) / 4;                          \
-        for (size_t i = 0; i < N; ++i) ((uint32_t*)&(x))[i] = 0; \
+#define GB_ZEROS_16(x)                                            \
+    {                                                             \
+        const size_t N = sizeof(x) / 2;                           \
+        for (size_t i = 0; i < N; ++i) ((uint16_t *)&(x))[i] = 0; \
+    }
+
+#define GB_ZEROS_32(x)                                            \
+    {                                                             \
+        const size_t N = sizeof(x) / 4;                           \
+        for (size_t i = 0; i < N; ++i) ((uint32_t *)&(x))[i] = 0; \
     }
 
 // MATH macros
@@ -418,11 +418,11 @@
 // *****************************************************************************
 // *****************************************************************************
 
-void gb_memcpy(void* dst, void* src, size_t len);
+void gb_memcpy(void *dst, void *src, size_t len);
 
-void gb_memset(void* dst, char val, size_t len);
+void gb_memset(void *dst, char val, size_t len);
 
-void gb_zeros(void* dst, size_t len);
+void gb_zeros(void *dst, size_t len);
 
 #endif // GB_UTILS_H
 
