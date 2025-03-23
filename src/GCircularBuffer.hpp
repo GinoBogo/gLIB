@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*
     @file
-        gCircularBuffer.hpp
+        GCircularBuffer.hpp
 
     @date
         March, 2025
@@ -9,8 +9,8 @@
     @author
         Gino Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 
-    @company
-        Airbus Italia S.p.A.
+    @copyright
+        This file is released under the MIT license
 */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 // *****************************************************************************
 
 template <typename T, size_t N>
-class gCircularBuffer {
+class GCircularBuffer {
    private:
     std::vector<T> m_buffer;
     size_t         m_head{0};
@@ -36,7 +36,7 @@ class gCircularBuffer {
     bool           m_full{false};
 
    public:
-    explicit gCircularBuffer() : m_buffer(N), m_size(N) {
+    explicit GCircularBuffer() : m_buffer(N), m_size(N) {
         static_assert((N & (N - 1)) == 0, "Buffer size must be a power of 2");
     }
 
