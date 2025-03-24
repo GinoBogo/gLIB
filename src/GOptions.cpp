@@ -2,7 +2,7 @@
 /// \file      GOptions.cpp
 /// \version   0.2
 /// \date      November 2020
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -139,8 +139,7 @@ auto string_to_type(const std::string& value, bool& is_valid) {
         }
     }
 
-    static auto decimals{
-        std::regex("^((-?)|(\\+?))((\\d+\\.\\d*)|(\\d*\\.\\d+))(((e)|(E))((-?)|(\\+?))0?\\d+|)$")};
+    static auto decimals{std::regex("^((-?)|(\\+?))((\\d+\\.\\d*)|(\\d*\\.\\d+))(((e)|(E))((-?)|(\\+?))0?\\d+|)$")};
 
     if (std::regex_match(value, decimals)) {
         if constexpr (std::is_same_v<T, float>) {

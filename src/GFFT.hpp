@@ -2,14 +2,14 @@
 /// \file      GFFT.hpp
 /// \version   0.1
 /// \date      May 2021
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GFFT_HPP
 #define GFFT_HPP
 
-#include <fftw3.h>
+#include <fftw3.h> // FFTW_BACKWARD, FFTW_ESTIMATE, FFTW_FORWARD, ...
 
 #include <cmath>       // round
 #include <type_traits> // is_same_v, is_floating_point_v

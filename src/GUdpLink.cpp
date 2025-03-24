@@ -2,7 +2,7 @@
 /// \file      GUdpLink.cpp
 /// \version   0.1
 /// \date      January 2021
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 

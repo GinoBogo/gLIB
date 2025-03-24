@@ -2,7 +2,7 @@
 /// \file      GBuffer.cpp
 /// \version   0.2
 /// \date      October 2020
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -13,7 +13,7 @@
 #include <cstdlib> // free, malloc, size_t
 #include <cstring> // memcpy, memset
 
-#include "GLogger.hpp"
+#include "GLogger.hpp" // LOG_WRITE, error
 
 GBuffer::GBuffer(size_t bytes) {
     m_size = bytes;

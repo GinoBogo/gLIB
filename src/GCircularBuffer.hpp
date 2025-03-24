@@ -1,18 +1,10 @@
-/* ************************************************************************** */
-/*
-    @file
-        GCircularBuffer.hpp
-
-    @date
-        March, 2025
-
-    @author
-        Gino Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
-
-    @copyright
-        This file is released under the MIT license
-*/
-/* ************************************************************************** */
+////////////////////////////////////////////////////////////////////////////////
+/// \file      GCircularBuffer.hpp
+/// \version   0.1
+/// \date      March, 2025
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
+/// \copyright This file is released under the MIT license
+////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GCIRCULARBUFFER_HPP
 #define GCIRCULARBUFFER_HPP
@@ -141,13 +133,9 @@ class GCircularBuffer {
 
     [[nodiscard]] constexpr size_t capacity() const { return m_size; }
 
-    T& operator[](size_t index) {
-        return m_buffer[(m_tail + index) & (m_size - 1)];
-    } // valid for power of 2 sizes
+    T& operator[](size_t index) { return m_buffer[(m_tail + index) & (m_size - 1)]; } // valid for power of 2 sizes
 
-    const T& at(size_t index) const {
-        return m_buffer[(m_tail + index) & (m_size - 1)];
-    } // valid for power of 2 sizes
+    const T& at(size_t index) const { return m_buffer[(m_tail + index) & (m_size - 1)]; } // valid for power of 2 sizes
 };
 
 #endif // GCIRCULARBUFFER_HPP

@@ -2,7 +2,7 @@
 /// \file      GFilePipe.cpp
 /// \version   0.2
 /// \date      December 2020
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -48,12 +48,12 @@ GFilePipe::GFilePipe(const std::string&    filename_fmt,
 
     switch (stream_type) {
         case GPingPong::READER:
-            m_ping_pong = new GPingPong(
-                chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
+            m_ping_pong =
+                new GPingPong(chunk_bytes, chunks_number, GPingPong::READER, g_file_pipe::fileReader, &m_user_data);
             break;
         case GPingPong::WRITER:
-            m_ping_pong = new GPingPong(
-                chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
+            m_ping_pong =
+                new GPingPong(chunk_bytes, chunks_number, GPingPong::WRITER, g_file_pipe::fileWriter, &m_user_data);
             break;
         default:
             m_ping_pong = nullptr;

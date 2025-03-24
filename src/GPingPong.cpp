@@ -2,7 +2,7 @@
 /// \file      GPingPong.cpp
 /// \version   0.1
 /// \date      October 2020
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -16,11 +16,8 @@
 #define PING 0
 #define PONG 1
 
-GPingPong::GPingPong(size_t     chunk_bytes,
-                     size_t     chunks_number,
-                     StreamType stream_type,
-                     WorkerFunc worker_func,
-                     std::any  *user_data)
+GPingPong::GPingPong(
+    size_t chunk_bytes, size_t chunks_number, StreamType stream_type, WorkerFunc worker_func, std::any *user_data)
     : m_chunk_bytes{chunk_bytes}, m_chunks_number{chunks_number}, m_stream_type{stream_type} {
     m_buffer_pair[0].focus = new GBuffer(m_chunk_bytes * m_chunks_number);
     m_buffer_pair[0].after = new GBuffer(m_chunk_bytes * m_chunks_number);
@@ -44,8 +41,7 @@ GPingPong::GPingPong(size_t     chunk_bytes,
     auto t_loop = [](ThreadArgs *t_args, WorkerArgs *w_args, WorkerFunc w_func) {
         while (!*t_args->thread_exit) {
             std::unique_lock<std::mutex> lock(*t_args->thread_mutex);
-            t_args->thread_order->wait(lock,
-                                       [t_args] { return *t_args->thread_exit || *t_args->thread_busy; });
+            t_args->thread_order->wait(lock, [t_args] { return *t_args->thread_exit || *t_args->thread_busy; });
 
             if (!*t_args->thread_exit) {
                 w_func(w_args);

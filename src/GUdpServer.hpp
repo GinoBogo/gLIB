@@ -2,7 +2,7 @@
 /// \file      GUdpServer.hpp
 /// \version   0.1
 /// \date      January 2021
-/// \author    Gino Francesco Bogo
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -38,11 +38,13 @@ class GUdpServer {
     auto buffer() { return m_buffer; }
 
    private:
-    int                     m_socket_fd{-1};
-    GBuffer                *m_buffer{nullptr};
-    bool                    m_is_ready{false};
-    struct sockaddr_storage m_peer_addr{};
-    socklen_t               m_peer_addr_len{sizeof(struct sockaddr_storage)};
+    int      m_socket_fd{-1};
+    GBuffer *m_buffer{nullptr};
+    bool     m_is_ready{false};
+
+    struct sockaddr_storage m_peer_addr {};
+
+    socklen_t m_peer_addr_len{sizeof(struct sockaddr_storage)};
 };
 
 #endif // GUDPSERVER_HPP

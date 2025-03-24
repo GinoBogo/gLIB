@@ -2,7 +2,7 @@
 /// \file      GUtils.hpp
 /// \version   0.2
 /// \date      October 2022
-/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
+/// \author    Gino Francesco Bogo (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ) (ᛊᛟᚱᚱᛖ ᛗᛖᚨ ᛁᛊᛏᚨᛗᛁ ᚨcᚢᚱᛉᚢ)
 /// \copyright This file is released under the MIT license
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -351,9 +351,8 @@
 #define SET_BITS(dst, mask_bit, mask_pos) BY_REF(dst) = (BY_REF(dst) | SET_MASK(mask_bit, mask_pos))
 #define CLS_BITS(dst, mask_bit, mask_pos) BY_REF(dst) = (BY_REF(dst) & NOT_MASK(mask_bit, mask_pos))
 
-#define READ_BITS(src, mask_bit, mask_pos) SHR_BITS(src, mask_bit, mask_pos)
-#define WRITE_BITS(dst, mask_bit, mask_pos, val) \
-    CLS_BITS(dst, mask_bit, mask_pos) | SHL_BITS(val, mask_bit, mask_pos)
+#define READ_BITS(src, mask_bit, mask_pos)       SHR_BITS(src, mask_bit, mask_pos)
+#define WRITE_BITS(dst, mask_bit, mask_pos, val) CLS_BITS(dst, mask_bit, mask_pos) | SHL_BITS(val, mask_bit, mask_pos)
 
 // MEMORY/BUFFER macros
 #define GB_ARRAY_32(x) ((uint32_t *)&(x))
