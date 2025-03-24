@@ -1,6 +1,6 @@
 # **gLIB**
 
-Collection of C++17 classes that are _fast_, _small_ and _multi-platform_.
+Collection of C++17 classes designed to be _fast_, _compact_ and _multi-platform_.
 
 ## **List of classes** ##
 
